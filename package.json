@@ -21,7 +21,8 @@
     "wavesurfer.js": "^7.5.3",
     "web-vitals": "^2.1.4",
     "yarn": "^1.22.21",
-    "sweetalert2": "^11.10.2"
+    "sweetalert2": "^11.10.2",
+    "axios": "^1.6.4"
   },
   "scripts": {
     "start": "react-scripts start",
