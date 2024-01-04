@@ -22,7 +22,8 @@
     "web-vitals": "^2.1.4",
     "yarn": "^1.22.21",
     "sweetalert2": "^11.10.2",
-    "axios": "^1.6.4"
+    "axios": "^1.6.4",
+    "styled-components": "^6.1.6"
   },
   "scripts": {
     "start": "react-scripts start",
