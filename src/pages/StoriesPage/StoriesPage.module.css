@@ -1,0 +1,96 @@
+.storiesPageContainer {
+    display: flex;
+  }
+  
+  .sidebar {
+    width: 20%;
+    margin-left: 50px;
+    background-color: #bbb1b1;
+    border: 2px solid black;
+    height: 100vh;
+    width: 50vh;
+  }
+  
+  .storyCardsContainer {
+    width: 100%;
+  }
+  
+  .cards {
+    margin-top: 20px;
+    margin-left: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  .cards > div {
+    width: calc(25% - 20px);
+    height: 200px;
+    background-color: #d0e0f0;
+    border: 2px solid red;
+  }
+  
+  .showMoreButton {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+  }
+  /* StoriesPage.module.css */
+.pageContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0px;
+    padding: 30px;
+  }
+  
+  .sidebarContainer {
+    flex: 1 0 200px;
+  }
+  
+  .mainContent {
+    flex: 6 6 1000px;
+  }
+  
+  .storyCardContainer {
+    flex: 1 0 25%;
+    max-width: 25%;
+  }
+  
+  @media (max-width: 1200px) {
+    .storyCardContainer {
+      flex: 1 0 31%;
+      max-width: 31%;
+    }
+  }
+  
+  @media (max-width: 992px) {
+    .pageContainer {
+      flex-direction: column;
+    }
+  
+    .sidebarContainer,
+    .mainContent {
+      flex: 1 0 100%;
+    }
+  
+    .storyCardContainer {
+      flex: 1 0 48%;
+      max-width: 48%;
+    }
+  }
+  .storiesContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: flex-start; 
+    margin-top: 100px;
+    margin-left: 150px;
+  }
+  @media (max-width: 768px) {
+    .storyCardContainer {
+      flex: 1 0 100%;
+      max-width: 100%;
+    }
+  }
+  

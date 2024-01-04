@@ -1,0 +1,44 @@
+.homepage {
+    font-family: 'Roboto', sans-serif;
+  }
+  
+  .header {
+    text-align: center;
+    padding: 5rem 1rem;
+  }
+  
+  .header h1 {
+    color: var(--gray-scales-black, #272343);
+    font-family: 'Inter', sans-serif;
+    font-size: 80px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 150%; /* 120px */
+    text-transform: capitalize;
+    text-align: left;
+    margin-bottom: 5rem;
+    width: 753px;
+    height: 272px;
+    flex-shrink: 2;
+    display: flex;
+    padding-left: 140px;
+  }
+  
+  .register-now-btn {
+    text-decoration: none;
+    background-color: #029FAE;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    margin-left: 140px; /* Đặt lề bên trái tại đây */
+    display: flex;
+    width: 150px;
+    height: 30px;
+    padding: 10px 20px;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    flex-shrink: 0;
+    
+  }
+  

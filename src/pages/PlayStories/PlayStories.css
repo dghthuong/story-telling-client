@@ -1,0 +1,42 @@
+.play-stories {
+    text-align: center;
+  }
+  
+  .back-button {
+    margin: 20px;
+    padding: 10px 20px;
+    cursor: pointer;
+  }
+  
+  .story-details {
+    margin-bottom: 30px;
+  }
+  
+  .story-cover {
+    max-width: 200px;
+    border-radius: 10px;
+  }
+  
+  .story-title {
+    font-size: 24px;
+    color: #333;
+  }
+  
+  .story-author {
+    font-size: 18px;
+    color: #666666;
+  }
+  
+  .story-year {
+    font-size: 16px;
+    color: #999;
+  }
+  
+  .audio-player-container {
+    /* Add styling to your audio player container */
+  }
+  
+  .audio-player {
+    /* Style your audio player controls here */
+  }
+  

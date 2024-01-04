@@ -1,0 +1,49 @@
+/* Navbar.css */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem;
+    background-color: #f8f8f8;
+  }
+  
+  .navbar-link{
+    color: rgb(158, 158, 164); /* Màu chữ khi rê chuột qua */
+  }
+
+  .navbar .active 
+  {
+    background-color: transparent;
+    color: #029FAE ;
+  }
+
+  .logo {
+    font-size: 1.3rem;
+    color: #393232;
+    font-weight: bold;
+  }
+  
+  .menu a, .auth a {
+    text-decoration: none;
+    color: #333;
+    margin-left: 1rem;
+  }
+  
+  .auth .login-btn {
+    padding: 0.5rem 1.5rem;
+    background-color: #029FAE;
+    color: rgb(23, 18, 18);
+    border: none;
+    border-radius: 5px;
+  }
+  
+  .auth .register-btn {
+    padding: 0.5rem 1rem;
+    background-color: #c3bdbd;
+    color: black;
+    border: none;
+    border-radius: 5px;
+  }
+
+ 
+  

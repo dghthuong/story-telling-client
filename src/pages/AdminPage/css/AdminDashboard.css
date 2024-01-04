@@ -1,0 +1,75 @@
+/* General layout */
+.container-fluid {
+    display: flex;
+    flex-direction: row;
+    padding: 20px;
+  }
+  
+  
+  /* Sidebar links card */
+  .card {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+
+  .card-header {
+    background-color: #f5f5f5;
+    border-bottom: 1px solid #ddd;
+    padding: 10px;
+    font-weight: bold;
+  }
+  
+  .list-group-item {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .list-group-item:last-child {
+    border-bottom: none;
+  }
+  
+  /* User information card */
+  .card.mb-5 {
+    margin-bottom: 20px;
+  }
+  
+  /* Sign Out Button */
+  button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 20px;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Admin links */
+  .nav-link {
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  .nav-link:hover {
+    text-decoration: underline;
+  }
+  
+  /* Specific styles for your admin dashboard */
+  .col-3 {
+    width: 25%;
+  }
+  
+  .col-9 {
+    width: 75%;
+  }
+  
+  /* This is for the alert messages from SweetAlert2 */
+  .swal2-popup {
+    font-size: 1.6rem;
+  }
+  
