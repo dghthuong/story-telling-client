@@ -1,9 +1,10 @@
 import axios from "axios";
 
+const API_URL = process.env.REACT_APP_API_URL;
 
 export const getAllUsers = async (token) => {
     try {
-      const response = await axios.get('http://localhost:8000/api/list-user', {
+      const response = await axios.get(`${API_URL}/api/list-user`, {
         headers: {
           Authorization: `Bearer ${token}`,
           // If the role is expected as a header, uncomment the following line
@@ -23,7 +24,7 @@ export const getAllUsers = async (token) => {
 export const deactivateUser = async (userId) => {
     try {
       // Send a PUT request to update the user's active status to false
-      const response = await axios.put(`http://localhost:8000/api/deactive-user/${userId}`);
+      const response = await axios.put(`${API_URL}/api/deactive-user/${userId}`);
       
       // Check if the request was successful
       if (response.status === 200) {
@@ -44,7 +45,7 @@ export const deactivateUser = async (userId) => {
 
   export const createUser = async (userData, token) => {
     try {
-      const response = await axios.post('http://localhost:8000/api/create-user', userData, {
+      const response = await axios.post(`${API_URL}/api/create-user`, userData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -66,7 +67,7 @@ export const deactivateUser = async (userId) => {
 
   export const updateUser = async (userId, userData, token) => {
     try {
-      const response = await axios.put(`http://localhost:8000/api/update-user/${userId}`, userData, {
+      const response = await axios.put(`${API_URL}/api/update-user/${userId}`, userData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -87,7 +88,7 @@ export const deactivateUser = async (userId) => {
 
   export const activateUser = async (userId, token) => {
     try {
-      const response = await axios.put(`http://localhost:8000/api/active-user/${userId}`, null, {
+      const response = await axios.put(`${API_URL}/api/active-user/${userId}`, null, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

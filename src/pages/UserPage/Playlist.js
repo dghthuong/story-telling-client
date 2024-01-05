@@ -1,9 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useCallback } from "react";
 import { Table, Button, Modal } from "antd";
 import { PlayCircleFilled,DeleteOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import QRCode from "qrcode.react";
+
+const API_URL = process.env.REACT_APP_API_URL;
+
 
 const PlaylistPage = () => {
   const [playlistData, setPlaylistData] = useState([]);
@@ -11,14 +14,23 @@ const PlaylistPage = () => {
   const [currentAudioUrl, setCurrentAudioUrl] = useState("");
   const [showQR, setShowQR] = useState(false);
   const navigate = useNavigate();
+  const [voiceTitle, setVoiceTitle] = useState('');
+
 
   const userId = localStorage.getItem("id");
+
+  useEffect(() => {
+    if (!isModalVisible) {
+      setCurrentAudioUrl("");
+    }
+  }, [isModalVisible]);
+  
 
   useEffect(() => {
     const fetchPlaylistData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8000/api/playlist/${userId}`
+          `${API_URL}/api/playlist/${userId}`
         );
         // Assuming response.data.stories is the array of story objects
         const stories = response.data.stories || [];
@@ -33,8 +45,10 @@ const PlaylistPage = () => {
               title: story.title,
               voice: userVoice ? userVoice.narrator : "N/A", // Fallback to 'N/A' if not found
               audioUrl: userVoice
-                ? `http://localhost:8000/${userVoice.audioUrl}`
+                ? `${API_URL}/${userVoice.audioUrl}`
                 : "", // Fallback to empty string if not found
+
+              voiceId: userVoice.voiceId
             };
           })
           .filter((item) => item.audioUrl); // Filter out any items without an audio URL
@@ -47,6 +61,38 @@ const PlaylistPage = () => {
     fetchPlaylistData();
   }, [userId]);
 
+  const VoiceColumn = ({ voiceId }) => {
+    const [voiceTitle, setVoiceTitle] = useState('Loading...');
+  
+    useEffect(() => {
+      const fetchVoiceTitle = async () => {
+        try {
+          const response = await axios.get(`${API_URL}/api/audio/${voiceId}`);
+          const voices = response.data; // Giả sử response là một array
+          if (voices && voices.length > 0) {
+            // Lấy title từ phần tử đầu tiên của array
+            setVoiceTitle(voices[0].title);
+          } else {
+            setVoiceTitle('N/A');
+          }
+        } catch (error) {
+          console.error("Error fetching voice data:", error);
+          setVoiceTitle('N/A');
+        }
+      };
+  
+      fetchVoiceTitle();
+    }, [voiceId]);
+  
+    return <span>{voiceTitle}</span>;
+  };
+  
+  
+
+
+
+
+
   const handleRemoveFromPlaylist = async (storyId) => {
     Modal.confirm({
       title: 'Are you sure you want to remove this story from the playlist?',
@@ -55,7 +101,7 @@ const PlaylistPage = () => {
       cancelText: 'No, keep it',
       onOk: async () => {
         try {
-          await axios.delete(`http://localhost:8000/api/playlist/${userId}/${storyId}`);
+          await axios.delete(`${API_URL}/api/playlist/${userId}/${storyId}`);
   
           // Update the state to remove the story from the table
           setPlaylistData(playlistData.filter((story) => story.key !== storyId));
@@ -76,9 +122,11 @@ const PlaylistPage = () => {
     },
     {
       title: "Voice",
-      dataIndex: "voice",
-      key: "voice",
+      dataIndex: "voiceId",
+      key: "voiceId",
+      render: voiceId => <VoiceColumn voiceId={voiceId} />,
     },
+    
     {
       title: "Action",
       key: "action",
@@ -99,27 +147,26 @@ const PlaylistPage = () => {
     },
   ];
 
-  const playAudio = (audioUrl) => {
-    console.log(`Trying to play audio from URL: ${audioUrl}`); // Debugging line
+  const playAudio = useCallback((audioUrl) => {
+    console.log(`Trying to play audio from URL: ${audioUrl}`);
     setCurrentAudioUrl(audioUrl);
     setIsModalVisible(true);
-  };
+  }, []);
+  
 
   // const playAudio = (storyId) => {
   //   // Sử dụng navigate để chuyển hướng đến trang PlayStories với ID của câu chuyện
   //   navigate(`/play-stories/${storyId}`);
   // };
 
-  const handleShare = () => {
-    setShowQR(true); // Hiển thị QR Code khi người dùng nhấn nút Chia Sẻ
-  };
 
   return (
     <div style={{ margin: "0px 100px" }}>
-      <h1>Playlist</h1>
+      <h2 style={{ textAlign: "Left" }}>My Playlist</h2>
       <Table dataSource={playlistData} columns={columns} />
 
       <Modal
+        key={currentAudioUrl}
         title="Audio Player"
         visible={isModalVisible}
         onOk={() => setIsModalVisible(false)}

@@ -6,6 +6,9 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import styled from "styled-components";
 
+
+const API_URL = process.env.REACT_APP_API_URL;
+
 const RecorderContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -74,7 +77,7 @@ const AudioRecorder = () => {
     const fetchVoiceId = async () => {
       try {
         const response = await axios.post(
-          "http://localhost:8000/api/voice/generate-id"
+          `${API_URL}/api/voice/generate-id`
         );
         const fetchedVoiceId = response.data.voiceId;
         setVoiceId(fetchedVoiceId);
@@ -323,7 +326,7 @@ const AudioRecorder = () => {
       const blobs = await Promise.all(blobPromises2);
       // Now send the formData with axios
       const response = await axios.post(
-        "http://localhost:8000/api/audio/new-audio",
+        `${API_URL}/api/audio/new-audio`,
         formData
       );
       console.log("Upload successful", response.data);

@@ -23,7 +23,7 @@ import {
   message,
 } from "antd";
 
-const API_URL = "http://localhost:8000"; // Adjust this to your API base URL
+const API_URL = process.env.REACT_APP_API_URL;
 
 const ManageStories = () => {
   const [stories, setStories] = useState([]);

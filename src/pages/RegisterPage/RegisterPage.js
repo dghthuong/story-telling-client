@@ -4,6 +4,9 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
 
+const API_URL = process.env.REACT_APP_API_URL;
+
+
 const RegisterPage = () => {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
@@ -14,7 +17,7 @@ const RegisterPage = () => {
   const handleSignUp = (event) => {
     event.preventDefault();
     axios
-      .post("http://localhost:8000/api/signup", { email, password })
+      .post(`${API_URL}/api/signup`, { email, password })
       .then((result) => {
         console.log(result);
         Swal.fire({

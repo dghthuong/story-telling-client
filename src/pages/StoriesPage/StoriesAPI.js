@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-const baseUrl = 'http://localhost:8000/api'; // Replace with your actual base URL
+const API_URL = process.env.REACT_APP_API_URL;// Replace with your actual base URL
 
 const axiosInstance = axios.create({
-    baseURL: baseUrl,
+    baseURL: API_URL,
 });
 
 // Get all stories

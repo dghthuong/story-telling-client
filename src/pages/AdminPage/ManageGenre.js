@@ -5,7 +5,8 @@ import { Button, Table, Modal } from "antd";
 
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import {PlusSquareOutlined} from '@ant-design/icons'
-const API_URL = 'http://localhost:8000'; // Replace with your API base URL
+
+const API_URL = process.env.REACT_APP_API_URL;
 
 const ManageGenres = () => {
   const [genres, setGenres] = useState([]);

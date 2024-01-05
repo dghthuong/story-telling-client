@@ -3,6 +3,8 @@ import { Select, message, Button, Table, Modal } from "antd";
 import {DeleteOutlined } from '@ant-design/icons'
 import axios from "axios";
 
+const API_URL = process.env.REACT_APP_API_URL;
+
 const AudioList = () => {
   const [audios, setAudios] = useState([]);
   const [selectedAudio, setSelectedAudio] = useState(null);
@@ -11,7 +13,7 @@ const AudioList = () => {
     const fetchAudios = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8000/api/audio/list/${userId}`
+          `${API_URL}/api/audio/list/${userId}`
         );
         setAudios(response.data);
         if (response.data.length > 0) {
@@ -39,7 +41,7 @@ const AudioList = () => {
       cancelText: 'No, keep it',
       onOk: async () => {
         try {
-          await axios.delete(`http://localhost:8000/api/audio/${audioId}`);
+          await axios.delete(`${API_URL}/api/audio/${audioId}`);
           setAudios(audios.filter((audio) => audio._id !== audioId));
           message.success("Audio deleted successfully");
         } catch (error) {
@@ -64,7 +66,7 @@ const AudioList = () => {
         record.recordings?.map((recording, index) => (
           <audio
             key={index}
-            src={`http://localhost:8000/${recording.url}`}
+            src={`${API_URL}/${recording.url}`}
             controls
           />
         )),

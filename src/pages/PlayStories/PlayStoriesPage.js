@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './PlayStories.css'; // Make sure to create a CSS file with your styles
 
-const API_URL = "http://localhost:8000";
+const API_URL = process.env.REACT_APP_API_URL;
 
 function PlayStories() {
   const { storyId } = useParams();
