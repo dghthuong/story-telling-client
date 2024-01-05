@@ -13,7 +13,7 @@ const LoginPage = () => {
   const handleSignIn = (event) => {
     event.preventDefault();
     axios
-      .post("http://localhost:8000/api/signin", {email,password})
+      .post("https://kechuyencotich-server-cb42d879df56.herokuapp.com/api/signin", {email,password})
       .then((result) => {
         console.log(result);
         loginContext(result.data.user._id,email, result.data.token, result.data.user.role); 
