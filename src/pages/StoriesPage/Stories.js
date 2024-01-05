@@ -7,7 +7,7 @@ import { Pagination, Search ,message} from 'antd';
 import styles from './StoriesPage.module.css';
 
 
-const API_URL = "http://localhost:8000/api";
+const API_URL = process.env.REACT_APP_API_URL;
 
 const StoriesPage = () => {
   const storiesPerPage = 6;
@@ -22,7 +22,7 @@ const StoriesPage = () => {
   useEffect(() => {
     const fetchStories = async () => {
       try {
-        const response = await axios.get(`${API_URL}/getAll-stories`);
+        const response = await axios.get(`${API_URL}/api/getAll-stories`);
         setStories(response.data);
       } catch (error) {
         console.error('Error fetching stories:', error);
@@ -31,7 +31,7 @@ const StoriesPage = () => {
 
     const fetchGenres = async () => {
       try {
-        const response = await axios.get(`${API_URL}/getAll-genre`);
+        const response = await axios.get(`${API_URL}/api/getAll-genre`);
         setGenres(response.data);
       } catch (error) {
         console.error('Error fetching genres:', error);
@@ -53,7 +53,7 @@ const StoriesPage = () => {
     try {
       // Make sure to replace 'userId' with the actual user ID from your auth context or props
       const userId = localStorage.getItem("id");
-      await axios.post(`${API_URL}/wishlist/${userId}/add`, { storyId });
+      await axios.post(`${API_URL}/api/wishlist/${userId}/add`, { storyId });
       message.success('Story added to wishlist!'); // Or handle this with a more user-friendly UI update
     } catch (error) {
       console.error('Error adding story to wishlist:', error);
@@ -83,7 +83,7 @@ const StoriesPage = () => {
   };
   const currentStories = filteredStories.slice(indexOfFirstStory, indexOfLastStory).map(story => ({
     ...story,
-    imageUrl: `http://localhost:8000/${story.imageUrl}` // Construct the full image URL
+    imageUrl: `${API_URL}/${story.imageUrl}` // Construct the full image URL
   }));
   return (
 <div className={styles.pageContainer}>
