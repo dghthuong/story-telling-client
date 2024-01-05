@@ -9,7 +9,7 @@ const axiosInstance = axios.create({
 // Get all stories
 export const getAllStories = async (token) => {
     try {
-        const response = await axiosInstance.get('/getAll-stories', {
+        const response = await axiosInstance.get(`${API_URL}/api/getAll-stories`, {
             headers: { Authorization: `Bearer ${token}` }
         });
         return response.data;
@@ -21,7 +21,7 @@ export const getAllStories = async (token) => {
 // Add a story
 export const addStory = async (storyData, token) => {
     try {
-        const response = await axiosInstance.post('/create-stories', storyData, {
+        const response = await axiosInstance.post(`${API_URL}/api/create-stories`, storyData, {
             headers: { 
                 Authorization: `Bearer ${token}`
                 // Bỏ 'Content-Type': 'multipart/form-data'
@@ -38,7 +38,7 @@ export const addStory = async (storyData, token) => {
 // Update a story
 export const updateStory = async (storyId, storyData, token) => {
     try {
-        const response = await axiosInstance.put(`/update-stories/${storyId}`, storyData, {
+        const response = await axiosInstance.put(`${API_URL}/api/update-stories/${storyId}`, storyData, {
             headers: { 
                 Authorization: `Bearer ${token}`
                 // Bỏ 'Content-Type': 'multipart/form-data'
@@ -53,7 +53,7 @@ export const updateStory = async (storyId, storyData, token) => {
 // Delete a story
 export const deleteStory = async (storyId, token) => {
     try {
-        const response = await axiosInstance.delete(`/delete-stories/${storyId}`, {
+        const response = await axiosInstance.delete(`${API_URL}/api/delete-stories/${storyId}`, {
             headers: { Authorization: `Bearer ${token}` }
         });
         return response.data;
