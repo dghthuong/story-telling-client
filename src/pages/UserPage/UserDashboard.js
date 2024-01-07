@@ -12,6 +12,8 @@ import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import AudioRecorder from "./Voice";
 import AudioList from "./ManageVoice";
+import UserInfomation from "./UserInfomation";
+
 const { Header, Sider, Content, Button } = Layout;
 
 const UserPage = () => {
@@ -46,9 +48,9 @@ const UserPage = () => {
     switch (keySelect) {
       case "1":
         return (
-          <div>
-            <h1>Account</h1>
-          </div>
+        <>
+        <UserInfomation/>
+        </>
         );
       case "2":
         return (
@@ -85,11 +87,11 @@ const UserPage = () => {
               icon: <UserOutlined />,
               label: "Account",
             },
-            {
-              key: "2",
-              icon: <VideoCameraOutlined />,
-              label: "Voice",
-            },
+            // {
+            //   key: "2",
+            //   icon: <VideoCameraOutlined />,
+            //   label: "Voice",
+            // },
             {
               key: "3",
               icon: <UploadOutlined />,

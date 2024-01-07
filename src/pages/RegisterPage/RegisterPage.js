@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import "./RegisterPage.css"; // Make sure to create a corresponding CSS file to style your components
+import "./RegisterPage.css";
+ // Make sure to create a corresponding CSS file to style your components
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";

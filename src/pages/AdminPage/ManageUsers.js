@@ -5,6 +5,8 @@ import { getAllUsers, deactivateUser,createUser, updateUser,activateUser } from 
 import { PlusSquareOutlined, LockOutlined, EditOutlined, UnlockOutlined } from "@ant-design/icons";
 import { Button, Table, Modal } from "antd";
 import UserForm from "../../components/Form/UserForm";
+import './css/ManageUsers.css'
+
 
 const ManageUsers = () => {
   const formRef = useRef(null);
@@ -41,15 +43,15 @@ const ManageUsers = () => {
       dataIndex: "email",
     },
     {
-      title: "Status",
+      title: "Trạng thái",
       dataIndex: "status",
     },
     {
-      title: "Date",
+      title: "Ngày đăng ký",
       dataIndex: "date",
     },
     {
-      title: "Action",
+      title: "Hành động",
       render: (_, record) => renderAction(record),
     },
   ];
@@ -82,7 +84,7 @@ const ManageUsers = () => {
         const transformedData = response.map((user) => ({
           key: user._id,
           email: user.email,
-          status: user.active ? "Active" : "Deactive",
+          status: user.active ? "Kích hoạt" : "Khoá",
           date: new Date(user.date).toLocaleDateString(),
         }));
         setUsers(transformedData);
@@ -142,13 +144,14 @@ const ManageUsers = () => {
 
   return (
     <div style={{ textAlign: "left" }}>
-    <h1>Manage Users</h1>
+    <h1>Quản lý người dùng</h1>
     <Button
-      style={{ height: "50px", width: "50px", borderRadius: "8px" }}
+      className="manageUsers-btn"
       onClick={showModal}
     >
-      <PlusSquareOutlined />
+      <PlusSquareOutlined /> Thêm người dùng 
     </Button>
+    <h2> </h2>
     <Table rowSelection={rowSelection} columns={columns} dataSource={users} />
     <Modal
       title={editingUser ? "Edit User" : "Create New User"}

@@ -51,8 +51,6 @@ const App = () => {
         return <ManageUsers />;
       case "2":
         return <ManageStories />;
-      case "3":
-        return <div>User Information</div>;
       case "4":
         return <ManageGenre/>;
       default:
@@ -85,11 +83,11 @@ const App = () => {
               icon: <VideoCameraOutlined />,
               label: "Manage Stories",
             },
-            {
-              key: "3",
-              icon: <UploadOutlined />,
-              label: "Account",
-            },
+            // {
+            //   key: "3",
+            //   icon: <UploadOutlined />,
+            //   label: "Account",
+            // },
             {
               key: "4",
               icon: <UploadOutlined />,

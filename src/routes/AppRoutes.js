@@ -11,6 +11,8 @@ import PlayStories from "../pages/PlayStories/PlayStoriesPage";
 import StoriesPage from "../pages/StoriesPage/Stories";
 import WishlistPage from "../pages/UserPage/Wishlist";
 import PlaylistPage from "../pages/UserPage/Playlist";
+import AudioRecorder from "../pages/UserPage/Voice";
+import AudioList from "../pages/UserPage/ManageVoice"
 
 
 const AppRoutes = () => {
@@ -26,6 +28,8 @@ const AppRoutes = () => {
         <Route path="/user/wishlist" element={<UserRoutes><WishlistPage/></UserRoutes>} />
         <Route path ="/user/playlist" element={<PlaylistPage/>}/>  
         <Route path="/play/:storyId" element={<PlayStories />} />
+        <Route path="/user/record" element={<UserRoutes><AudioRecorder/></UserRoutes>} />
+        <Route path="/user/manage-voice" element={<UserRoutes><AudioList/></UserRoutes>} />
       </Routes>
     </>
   );

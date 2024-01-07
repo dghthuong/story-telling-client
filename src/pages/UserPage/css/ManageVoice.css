@@ -1,0 +1,9 @@
+.manageVoice-btn {
+    padding: 0.5rem 1.5rem;
+    background-color: #07a6b5;
+    color: rgb(23, 18, 18);
+    border: none;
+    border-radius: 5px;
+    height: 40px;
+    gap: 10px; 
+  }

@@ -1,0 +1,48 @@
+.user-information-container h1 {
+    font-size: 2em; /* Increase size for the main title */
+    text-align: left;
+}
+
+.ant-form-item-label label {
+    font-weight: bold; /* Make label text bold */
+}
+
+
+.input-disabled .ant-input {
+    color: rgba(0, 0, 0, 0.65); /* Make the disabled input text darker */
+    border: none; /* Remove the border */
+    box-shadow: none; /* Remove the box-shadow if any */
+    cursor: default; /* Reset cursor to default instead of not-allowed */
+}
+
+
+.custom-form .ant-form-item {
+    margin-bottom: 16px; /* Increase the space between form items */
+    margin-left: 70px;
+  }
+  
+  .custom-form .ant-form-item-label > label {
+    font-size: 16px; /* Increase the font size of the label */
+    font-weight: bold; /* Make the label bold */
+  }
+  
+  .custom-form .ant-input {
+    height: 50px;
+     
+    font-size: 17px; /* Increase the font size inside the input */
+  }
+  
+  /* Adjust the size of the button if needed */
+  .custom-form .ant-btn {
+    padding: 6px 15px; /* Increase padding for a larger button */
+    font-size: 16px; /* Increase font size for the button text */
+  }
+  
+  /* You may also want to increase the size of the icons if you are using them */
+  .custom-form .anticon {
+    font-size: 16px; /* Increase the size of the icon */
+  }
+  
+
+
+  

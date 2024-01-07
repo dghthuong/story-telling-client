@@ -20,6 +20,7 @@ const UserProvider = ({ children }) => {
 
   const logout = () => {
     localStorage.removeItem("token")
+    localStorage.removeItem("id")
     setUser((user) => ({
       id:"",
       email: "",

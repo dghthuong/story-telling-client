@@ -11,6 +11,10 @@ import {
   EditOutlined,
   DeleteOutlined,
   UploadOutlined,
+  EyeInvisibleOutlined,
+  EyeOutlined,
+  DeleteFilled,
+  SlidersFilled
 } from "@ant-design/icons";
 import {
   Button,
@@ -22,6 +26,10 @@ import {
   Upload,
   message,
 } from "antd";
+
+
+import "./css/ManageStories.css"
+
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -225,25 +233,26 @@ const ManageStories = () => {
       <>
         <Button
           onClick={() => editStory(record._id)}
-          style={{ marginRight: 8 }}
+          style={{ marginRight: 8 ,color: '#FFFFFF', background:'#F76B56'}}
         >
           <EditOutlined />
         </Button>
-        <Button onClick={() => removeStory(record._id)}>
-          <DeleteOutlined />
+        <Button style={{color:'#ffFFFF', background:'#ff0000'}} onClick={() => removeStory(record._id)}>
+          <DeleteFilled  />
         </Button>
 
         <Button
           onClick={() => toggleActiveState(record._id, record.isActive)}
-          style={{ marginLeft: 8 }}
+          style={{ marginLeft: 8 ,color:'#FFFFFF', background:'#5865F2'}}
         >
-          {record.isActive ? "Deactivate" : "Activate"}
+          {record.isActive ? <EyeOutlined /> : <EyeInvisibleOutlined/>}
         </Button>
         <Button
         onClick={() => generateAndSaveStory(record._id, record.description)}
-        style={{ marginLeft: 8 }}
+        style={{ marginLeft: 8 , color:'#ffffff', background:'#029FAE'}}
+
       >
-        Generate Story
+        <SlidersFilled/>
       </Button>
 
 
@@ -253,25 +262,25 @@ const ManageStories = () => {
 
   const columns = [
     {
-      title: "Title",
+      title: "Tên truyện",
       dataIndex: "title",
     },
     {
-      title: "Author",
+      title: "Tác giả",
       dataIndex: "author",
     },
     {
-      title: "Genre",
+      title: "Thể loại",
       dataIndex: "genre",
     },
     {
-      title: "Active",
+      title: "Trạng thái",
       dataIndex: "isActive",
       key: "isActive",
-      render: (isActive) => (isActive ? "Active" : "Inactive"),
+      render: (isActive) => (isActive ? "Hiển thị" : "Ẩn"),
     },
     {
-      title: "Action",
+      title: "Hành động",
       render: renderAction,
     },
   ];
@@ -317,13 +326,14 @@ const ManageStories = () => {
 
   return (
     <div style={{ textAlign: "left" }}>
-      <h1>Manage Stories</h1>
+      <h1>Quản lý câu chuyện</h1>
       <Button
-        style={{ height: "50px", width: "50px", borderRadius: "8px" }}
+        className="manageStories-btn"
         onClick={() => setIsModalOpen(true)}
       >
-        <PlusSquareOutlined />
+        <PlusSquareOutlined /> Thêm câu truyện
       </Button>
+      <h1> </h1>
       <Table columns={columns} dataSource={stories} />
 
       <Modal
@@ -368,7 +378,7 @@ const ManageStories = () => {
             >
               {imagePreview ? null : (
                 <div>
-                  <UploadOutlined />
+                  <UploadOutlined/>
                   <div style={{ marginTop: 8 }}>Upload</div>
                 </div>
               )}

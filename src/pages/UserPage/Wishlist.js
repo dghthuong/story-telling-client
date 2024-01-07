@@ -17,16 +17,18 @@ import {
   LoadingOutlined,
   PlayCircleFilled,
   SearchOutlined,
+  DeleteFilled,
+  SlidersFilled,
+  SlidersOutlined
 } from "@ant-design/icons";
 const { Option } = Select;
-
 
 const API_URL = process.env.REACT_APP_API_URL;
 
 const WishlistPage = () => {
   const [wishlist, setWishlist] = useState([]);
   const [generatedStories, setGeneratedStories] = useState([]);
-  const [selectedStoryId, setSelectedStoryId] = useState(null); 
+  const [selectedStoryId, setSelectedStoryId] = useState(null);
   const userId = localStorage.getItem("id");
   const [voices, setVoices] = useState([]);
   const [voiceSelections, setVoiceSelections] = useState({});
@@ -42,8 +44,7 @@ const WishlistPage = () => {
       ...prevSelections,
       [storyId]: selectedVoice,
     }));
-  
-    // Nếu giọng đọc mặc định được chọn, thêm ngay vào playlist
+
     if (selectedVoice === "default") {
       const story = wishlist.find((s) => s._id === storyId);
       if (story && story.isGenerated && story.voiceGenerated) {
@@ -52,13 +53,18 @@ const WishlistPage = () => {
     }
   };
 
+  // const handleVoiceChange = (selectedVoice, storyId) => {
+  //   setVoiceSelections((prevSelections) => ({
+  //     ...prevSelections,
+  //     [storyId]: selectedVoice,
+  //   }));
+  // };
+
   useEffect(() => {
     // Fetch voices using the userId, this should return an array of voice objects
     const fetchVoices = async () => {
       try {
-        const response = await axios.get(
-          `${API_URL}/api/audio/list/${userId}`
-        );
+        const response = await axios.get(`${API_URL}/api/audio/list/${userId}`);
         // If voiceId is a direct property of the voice object, this is correct.
         // If it's nested inside another object, you need to adjust the path accordingly.
         setVoices(response.data);
@@ -92,9 +98,7 @@ const WishlistPage = () => {
         setWishlist(
           response.data.stories.map((story) => ({
             ...story,
-            imageUrl: story.imageUrl
-              ? `${API_URL}/${story.imageUrl}`
-              : null,
+            imageUrl: story.imageUrl ? `${API_URL}/${story.imageUrl}` : null,
             description: story.description,
             voiceGenerated: story.voiceGenerated
               ? `${API_URL}/${story.voiceGenerated}`
@@ -128,9 +132,7 @@ const WishlistPage = () => {
       cancelText: "No, keep it",
       onOk: () => {
         axios
-          .delete(
-            `${API_URL}/api/wishlist/${userId}/remove/${storyId}`
-          )
+          .delete(`${API_URL}/api/wishlist/${userId}/remove/${storyId}`)
           .then((response) => {
             if (response.status === 200) {
               message.success("Removed from wishlist.");
@@ -213,16 +215,19 @@ const WishlistPage = () => {
       message.info(
         "This story has already been generated with the selected voice."
       );
+
       return;
     }
 
     // Tiếp tục thực hiện generate story nếu giọng chưa được generated
     try {
       setLoading(true);
+      setSelectedStoryId(storyId);
       setLoadingProgress(30);
 
       const audioPath = await generateAudio(selectedVoiceId, storyDescription);
       setLoadingProgress(60);
+      console.log(loadingProgress); 
 
       const audioUrl = await retrieveAudio(audioPath);
       setLoadingProgress(90);
@@ -248,7 +253,7 @@ const WishlistPage = () => {
 
       if (uploadResponse.status === 200) {
         message.success("Story generated and saved successfully.");
-
+        setLoadingProgress(100);
         setWishlist((prevWishlist) =>
           prevWishlist.map((storyItem) => {
             if (storyItem._id === storyId) {
@@ -282,6 +287,15 @@ const WishlistPage = () => {
     }
   };
 
+  const getDefaultVoice = (record) => {
+    // Ensure that defaultVoice is an array before calling find
+    if (Array.isArray(record.defaultVoice)) {
+      return record.defaultVoice.find((voice) => voice.isDefault === true);
+    }
+    // If defaultVoice is not an array, return null or some default object
+    return null;
+  };
+
   // Ví dụ về cập nhật trạng thái sau khi tạo giọng đọc thành công:
   // Giả sử bạn đã nhận được phản hồi từ server với thông tin giọng đọc mới đã tạo.
 
@@ -309,27 +323,45 @@ const WishlistPage = () => {
         return story;
       })
     );
-    // Cập nhật các state khác nếu cần
-    // ...
+
   };
 
-  const addToPlaylist = async (storyId, voiceId) => {
+
+
+  const addToPlaylist = async (storyId, voiceSelection) => {
     try {
-      await axios.post(`${API_URL}/api/playlist/add`, {
-        userId,
-        storyId,
-        voiceId, 
-      });
-      message.success("Story added to playlist.");
+      let response;
+      const requestData = {
+        userId: userId,
+        storyId: storyId,
+      };
+
+      if (voiceSelection === "default") {
+        // Gọi API thêm giọng đọc mặc định
+        response = await axios.post(
+          `${API_URL}/api/playlist/add-default-voice`,
+          requestData
+        );
+      } else {
+        // Gọi API thêm giọng đọc cụ thể
+        requestData.voiceId = voiceSelection;
+        response = await axios.post(`${API_URL}/api/playlist/add`, requestData);
+      }
+
+      if (response.status === 200) {
+        message.success("Story added to playlist successfully.");
+      } else {
+        message.error("Failed to add story to playlist.");
+      }
     } catch (error) {
       console.error("Error adding to playlist:", error);
-      message.error("Failed to add to playlist.");
+      message.error("Failed to add to playlist. " + error.message);
     }
   };
 
   const wishlistColumns = [
     {
-      title: "Image",
+      title: "Hình ảnh",
       dataIndex: "imageUrl",
       key: "imageUrl",
       render: (imageUrl) =>
@@ -341,19 +373,26 @@ const WishlistPage = () => {
     },
 
     {
-      title: isSearchVisible ? (
-        <Input
-          placeholder="Search by title"
-          onChange={handleSearch}
-          onBlur={hideSearch} // Thêm sự kiện onBlur
-          autoFocus
-        />
-      ) : (
-        <Button
-          icon={<SearchOutlined />}
-          onClick={() => setIsSearchVisible(true)}
-        />
+      title: (
+        <div>
+          Tên truyện
+          {isSearchVisible ? (
+            <Input
+              placeholder="Nhập tên truyện"
+              onChange={handleSearch}
+              onBlur={hideSearch} // Sự kiện onBlur
+              autoFocus
+            />
+          ) : (
+            <Button
+              icon={<SearchOutlined />}
+              onClick={() => setIsSearchVisible(true)}
+              style={{ marginLeft: "10px" }}
+            />
+          )}
+        </div>
       ),
+
       dataIndex: "title",
       key: "title",
       // Lọc dữ liệu dựa trên searchText
@@ -363,87 +402,120 @@ const WishlistPage = () => {
     },
 
     {
-      title: "Voice",
+      title: "Giọng đọc",
       key: "voice",
       render: (text, record) => (
         <Select
-          style={{ width: 120 }}
-          onChange={(value) => handleVoiceChange(value, record._id)}
-          value={voiceSelections[record._id]|| (record.isGenerated && "default")}
-        >
-          {record.isGenerated && <Option value="default">Default</Option>}
+      style={{ width: 120 }}
+      onChange={(value) => handleVoiceChange(value, record._id)}
+      value={
+        (record.isGenerated && !voiceSelections[record._id]) 
+          ? "default" 
+          : voiceSelections[record._id] || ""
+      }
+    >
+    
+      {record.isGenerated && <Option value="default">Default</Option>}
 
-          {voices.map((voice) => (
-            <Option key={voice._id} value={voice.voiceId || voice._id}>
-              {voice.title}
-            </Option>
-          ))}
-        </Select>
+      {voices.map((voice) => (
+        <Option key={voice._id} value={voice.voiceId || voice._id}>
+          {voice.title}
+        </Option>
+      ))}
+    </Select>
       ),
     },
     {
-      title: "Actions",
+      title: "Trạng thái",
+      key: "progress",
+      render: (text, record) => {
+        // Giả sử bạn lưu trữ trạng thái trong `userVoices`
+        const voiceStatus = record.userVoices.find(voice => voice.voiceId === voiceSelections[record._id])?.status;
+        const selectedVoiceId = voiceSelections[record._id];
+        const isDefaultVoiceSelected = selectedVoiceId === "default";
+        if (voiceStatus === "completed" ||isDefaultVoiceSelected ) {
+          return "Hoàn thành";
+        } else if (selectedStoryId === record._id && loadingProgress > 0 && loadingProgress < 100) {
+          return "Đang xử lý";
+        } else {
+          return "Chưa xử lý";
+        }
+      },
+    },
+    {
+      title: "Hành động",
       key: "actions",
       render: (text, record) => {
         const userId = localStorage.getItem("id");
         const selectedVoiceId = voiceSelections[record._id];
         const isDefaultVoiceSelected = selectedVoiceId === "default";
-        const voiceGenerated = record.userVoices.some(
-          (voice) => voice.voiceId === selectedVoiceId && voice.status === "completed"
-        ) || isDefaultVoiceSelected;
-    
+        // const voiceGenerated =
+        //   record.userVoices.some(
+        //     (voice) =>
+        //       voice.voiceId === selectedVoiceId && voice.status === "completed"
+        //   ) || isDefaultVoiceSelected;
+
+        const voiceGenerated =
+          isDefaultVoiceSelected ||
+          record.userVoices.some(
+            (voice) =>
+              voice.voiceId === voiceSelections[record._id] &&
+              voice.status === "completed"
+          );
         const isGenerating = loading && selectedStoryId === record._id;
-    
+
         return (
           <>
-            {!selectedVoiceId && (
+            {!selectedVoiceId && !isDefaultVoiceSelected && (
               <Tooltip title="Select a voice first">
-                <Button icon={<PlayCircleOutlined />} disabled />
+                <Button icon={<SlidersOutlined/>} disabled />
               </Tooltip>
             )}
-    
             {selectedVoiceId && !voiceGenerated && !isDefaultVoiceSelected && (
               <Tooltip title="Generate Story">
                 <Button
-                  icon={<PlayCircleFilled />}
+                  icon={<SlidersFilled />}
                   loading={isGenerating}
                   onClick={() => generateStory(record._id, record.description)}
                   disabled={isGenerating}
+                  style={{color:'#ffffff', background:'#029FAE'}}
                 />
               </Tooltip>
             )}
-    
+
             {(isDefaultVoiceSelected || voiceGenerated) && (
               <Tooltip title="Add to Playlist">
                 <Button
                   icon={<PlusCircleOutlined />}
                   onClick={() => {
-                    const audioUrl = isDefaultVoiceSelected ? record.voiceGenerated : undefined;
-                    addToPlaylist(record._id,selectedVoiceId);
+                    const audioUrl = isDefaultVoiceSelected
+                      ? record.voiceGenerated
+                      : undefined;
+                    addToPlaylist(record._id, selectedVoiceId);
                   }}
                   disabled={isGenerating}
                 />
               </Tooltip>
             )}
-    
+
             <Tooltip title="Remove from Wishlist">
               <Button
-                icon={<DeleteOutlined />}
+                icon={<DeleteFilled/>}
                 onClick={() => removeFromWishlist(record._id)}
                 disabled={isGenerating}
-                style={{ marginLeft: 8 }}
-              />
+                style={{ marginLeft: 8, color:'#ffffff', background:'#ff0000'}}
+             /> 
             </Tooltip>
           </>
         );
       },
-    }
+    },
   ];
 
   return (
     <div style={{ textAlign: "left" }}>
       <div style={{ margin: "50px 100px 0px 105px" }}>
-        <h2>My Wishlist</h2>
+        <h2 style={{color: '#029FAE'}}> Yêu thích</h2>
         <Table
           columns={wishlistColumns}
           dataSource={filteredWishlist}
@@ -453,5 +525,6 @@ const WishlistPage = () => {
     </div>
   );
 };
+
 
 export default WishlistPage;

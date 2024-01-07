@@ -34,7 +34,6 @@ export const addStory = async (storyData, token) => {
 };
 
 
-
 // Update a story
 export const updateStory = async (storyId, storyData, token) => {
     try {

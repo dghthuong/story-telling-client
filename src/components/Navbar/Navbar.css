@@ -5,10 +5,12 @@
     align-items: center;
     padding: 1.2rem;
     background-color: #f8f8f8;
+    
   }
   
   .navbar-link{
-    color: rgb(158, 158, 164); /* Màu chữ khi rê chuột qua */
+    color: rgb(158, 158, 164); 
+   
   }
 
   .navbar .active 
@@ -32,6 +34,14 @@
   .auth .login-btn {
     padding: 0.5rem 1.5rem;
     background-color: #029FAE;
+    color: rgb(23, 18, 18);
+    border: none;
+    border-radius: 5px;
+  }
+
+  .auth .wishlist-btn {
+    padding: 0.5rem 1.5rem;
+    background-color: #ededed;
     color: rgb(23, 18, 18);
     border: none;
     border-radius: 5px;

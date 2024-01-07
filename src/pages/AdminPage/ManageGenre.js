@@ -2,9 +2,12 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import GenreForm from "../../components/Form/GenreForm";
 import { Button, Table, Modal } from "antd";
-
-import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import "./css/ManageGenre.css"
+import { EditOutlined, DeleteOutlined, DeleteFilled } from "@ant-design/icons";
 import {PlusSquareOutlined} from '@ant-design/icons'
+
+
+
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -68,11 +71,11 @@ const ManageGenres = () => {
 
   const renderAction = (text, record) => (
     <>
-      <Button onClick={() => handleEdit(record)}>
+      <Button style={{color: '#ffffff', background:'#F76B56'}} onClick={() => handleEdit(record)}>
         <EditOutlined />
       </Button>
-      <Button onClick={() => handleDelete(record._id)} style={{ marginLeft: "10px" }}>
-        <DeleteOutlined />
+      <Button onClick={() => handleDelete(record._id)} style={{ marginLeft: "10px",background: '#ff0000',color:'#ffffff'}}>
+        <DeleteFilled />
       </Button>
     </>
   );
@@ -94,11 +97,12 @@ const ManageGenres = () => {
   };
 
   return (
-    <div>
-      <h1 style= {{marginLeft: '0px'}} >Manage Genres</h1>
-      <Button onClick={handleAdd} style={{ marginBottom: 16 }}>
-      <PlusSquareOutlined />
+    <div style={{textAlign:'Left'}}>
+      <h1 style= {{textAlign:'Left'}} >Manage Genres</h1>
+      <Button className="manageGenre-btn" onClick={handleAdd} >
+      <PlusSquareOutlined /> Thêm thể loại
       </Button>
+      <h2> </h2>
       <Table columns={columns} dataSource={genres.map((genre) => ({ ...genre, key: genre._id }))} />
       <Modal
         title={editingGenre ? "Edit Genre" : "Add New Genre"}

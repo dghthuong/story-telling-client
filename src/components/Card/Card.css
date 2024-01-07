@@ -1,0 +1,25 @@
+
+
+  .card .meta {
+    flex-grow: 1;
+    min-height: 60px; /* Allow meta to fill available space */
+  }
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%; /* This will push the footer to the bottom */
+  }
+  
+  .card img {
+    width: 100%; /* This ensures that the image takes up the full width of the card */
+    height: 200px; /* Adjust the height as necessary */
+    object-fit: cover; /* This will cover the area of the image without stretching it */
+  }
+  
+  .card p {
+    min-height: 20px; /* Adjust as needed to make genre line uniform */
+  }
+  
+  

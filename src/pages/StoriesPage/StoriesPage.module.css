@@ -37,11 +37,13 @@
     margin-top: 10px;
   }
   /* StoriesPage.module.css */
+
+
 .pageContainer {
     display: flex;
     flex-wrap: wrap;
-    gap: 0px;
-    padding: 30px;
+    gap: 1px;
+
   }
   
   .sidebarContainer {
@@ -56,7 +58,19 @@
     flex: 1 0 25%;
     max-width: 25%;
   }
+
   
+  .page-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* 100% của viewport height */
+  }
+  
+  /* Đẩy pagination-container xuống dưới cùng */
+  .pagination-container {
+    margin-top: auto; /* Tự động đẩy lên trên và phần tử này xuống dưới cùng */
+  }
+
   @media (max-width: 1200px) {
     .storyCardContainer {
       flex: 1 0 31%;
@@ -87,6 +101,7 @@
     margin-top: 100px;
     margin-left: 150px;
   }
+
   @media (max-width: 768px) {
     .storyCardContainer {
       flex: 1 0 100%;

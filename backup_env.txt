@@ -1,0 +1,4 @@
+REACT_APP_API_URL=https://kechuyencotich-server-cb42d879df56.herokuapp.com
+
+REACT_APP_API_URL=https://ketruyencotich.robotics-iot-hcmus.duckdns.org:8000
+
