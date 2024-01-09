@@ -20,14 +20,14 @@ const GenreForm = ({ genre, onSave }) => {
     <Form form={form} onFinish={handleSubmit} layout="vertical">
       <Form.Item
         name="name"
-        label="Genre Name"
-        rules={[{ required: true, message: 'Please input the genre name' }]}
+        label="Tên thể loại"
+        rules={[{ required: true, message: 'Tên thể loại là bắt buộc' }]}
       >
-        <Input placeholder="Enter genre name" />
+        <Input placeholder="Nhập tên thể loại" />
       </Form.Item>
       <Form.Item>
         <Button type="primary" htmlType="submit">
-          Save Genre
+          Xác nhận
         </Button>
       </Form.Item>
     </Form>

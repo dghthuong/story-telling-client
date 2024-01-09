@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import GenreForm from "../../components/Form/GenreForm";
-import { Button, Table, Modal } from "antd";
+import { Button, Table, Modal, message} from "antd";
 import "./css/ManageGenre.css"
 import { EditOutlined, DeleteOutlined, DeleteFilled } from "@ant-design/icons";
 import {PlusSquareOutlined} from '@ant-design/icons'
@@ -35,12 +35,23 @@ const ManageGenres = () => {
   };
 
   const handleDelete = async (genreId) => {
-    try {
-      await axios.delete(`${API_URL}/api/delete-genre/${genreId}`);
-      setGenres(genres.filter((genre) => genre._id !== genreId)); // Make sure you use the correct ID field
-    } catch (error) {
-      console.error('Error deleting genre:', error);
-    }
+    Modal.confirm({
+      title: 'Xác nhận',
+      content: 'Bạn có chắc chắn muốn xóa thể loại này không?',
+      okText: 'Có',
+      cancelText: 'Không',
+      onOk: async () => {
+        try {
+          await axios.delete(`${API_URL}/api/delete-genre/${genreId}`);
+          setGenres(genres.filter((genre) => genre._id !== genreId)); 
+          message.success("Thể loại được xoá thành công")// Make sure you use the correct ID field
+        } catch (error) {
+          console.error('Error deleting genre:', error);
+          message.error("Thể loại được xoá không thành công!")
+        }
+    
+      },
+    });
   };
 
   const handleAdd = () => {
@@ -71,7 +82,7 @@ const ManageGenres = () => {
 
   const renderAction = (text, record) => (
     <>
-      <Button style={{color: '#ffffff', background:'#F76B56'}} onClick={() => handleEdit(record)}>
+      <Button style={{color: '#ffffff', background:'#F19E3D'}} onClick={() => handleEdit(record)}>
         <EditOutlined />
       </Button>
       <Button onClick={() => handleDelete(record._id)} style={{ marginLeft: "10px",background: '#ff0000',color:'#ffffff'}}>
@@ -82,11 +93,11 @@ const ManageGenres = () => {
 
   const columns = [
     {
-      title: "Name",
+      title: "Thể loại",
       dataIndex: "name",
     },
     {
-      title: "Action",
+      title: "Hành động",
       key: "action",
       render: renderAction,
     },
@@ -98,14 +109,14 @@ const ManageGenres = () => {
 
   return (
     <div style={{textAlign:'Left'}}>
-      <h1 style= {{textAlign:'Left'}} >Manage Genres</h1>
+      <h1 style= {{textAlign:'Left'}} > Quản lý thể loại</h1>
       <Button className="manageGenre-btn" onClick={handleAdd} >
       <PlusSquareOutlined /> Thêm thể loại
       </Button>
       <h2> </h2>
       <Table columns={columns} dataSource={genres.map((genre) => ({ ...genre, key: genre._id }))} />
       <Modal
-        title={editingGenre ? "Edit Genre" : "Add New Genre"}
+        title={editingGenre ? "Chỉnh sửa thể loại" : "Thêm thể loại"}
         open={isModalOpen}
         onCancel={() => setIsModalOpen(false)}
         footer={null}

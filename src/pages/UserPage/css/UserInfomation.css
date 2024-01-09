@@ -45,4 +45,10 @@
   
 
 
-  
+  @media (max-width: 480px) {
+    .user-information-container {
+        transform: scale(0.4);
+        transform-origin: top left;
+        width: 250%; /* Double the width since we are scaling down to 50% */
+    }
+}

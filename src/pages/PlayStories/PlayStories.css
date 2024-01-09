@@ -1,42 +1,139 @@
 .play-stories {
-    text-align: center;
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  max-width: 100%;
+  max-height: 50%;
   
-  .back-button {
-    margin: 20px;
-    padding: 10px 20px;
-    cursor: pointer;
-  }
-  
+}
+
+.story-details {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  width: 60%;
+  max-width: 800px;
+  text-align: center;
+  max-width: 90%;
+  word-wrap: break-word;
+  padding: 5px;
+  margin: center; 
+}
+
+.story-cover {
+  max-width: 100%;
+  height: auto;
+  border-radius: 5px;
+}
+
+.story-title {
+  font-size: 2em;
+  margin-top: 10px;
+  color: #333;
+}
+
+.story-description {
+  font-size: 0.5em;
+  font-family: Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  text-align: justify; /* Canh đều văn bản */
+  line-height: 1.5; /* Khoảng cách giữa các dòng */
+  margin-top: 10px;
+  color: #555;
+  white-space: pre-line;
+
+}
+
+.story-author,
+.story-year {
+  font-size: 1em;
+  color: #666;
+  margin-top: 5px;
+}
+
+.audio-player-container {
+  width: 100%;
+  max-width: 600px;
+  margin:auto
+
+
+
+}
+
+.audio-player {
+  width: 100%;
+  border-radius: 5px;
+}
+
+.back-button {
+  margin-bottom: 20px;
+  padding: 10px 20px;
+  border-radius: 5px;
+  background-color: #029fae;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+
+/* Media query cho màn hình nhỏ (ví dụ: dưới 768px) */
+@media (max-width: 768px) {
   .story-details {
-    margin-bottom: 30px;
+    padding: 15px;
+ 
   }
-  
-  .story-cover {
-    max-width: 200px;
-    border-radius: 10px;
-  }
-  
+
   .story-title {
-    font-size: 24px;
-    color: #333;
+    font-size: 1.5em;
   }
-  
-  .story-author {
-    font-size: 18px;
-    color: #666666;
+
+  .story-description {
+    font-size: 1em;
   }
-  
-  .story-year {
-    font-size: 16px;
-    color: #999;
-  }
-  
+
   .audio-player-container {
-    /* Add styling to your audio player container */
+    max-width: 100%;
   }
-  
-  .audio-player {
-    /* Style your audio player controls here */
+
+  .back-button {
+    padding: 8px 16px;
   }
+
   
+}
+
+@media (max-width: 768px) {
+  .story-details {
+    max-width: 90%;
+    padding: 15px;
+  }
+
+  .story-title {
+    font-size: 1.5em;
+  }
+
+  .story-description {
+    font-size: 1em;
+  }
+
+}
+
+/* Media query cho màn hình lớn (ví dụ: trên 1200px) */
+@media (min-width: 1200px) {
+  .story-details {
+    max-width: 50%;
+    /* các style khác */
+  }
+
+  .story-title {
+    font-size: 2.5em;
+  }
+
+  .story-description {
+    font-size: 1.4em;
+  }
+
+  /* các thay đổi khác */
+}
+
+

@@ -42,3 +42,28 @@
     
   }
   
+
+  @media screen and (max-width: 600px) {
+    .header {
+      padding: 1rem;
+    }
+  
+    .header h1 {
+      font-size: 40px; /* Giảm kích thước font */
+      text-align: center; /* Căn giữa cho tiêu đề */
+      margin-bottom: 2rem;
+      width: auto; /* Auto width để phù hợp với màn hình */
+      height: auto; /* Auto height */
+      padding-left: 0; /* Loại bỏ padding trái */
+      display: block; /* Sử dụng block thay vì flex */
+    }
+  
+    .register-now-btn {
+      margin-left: 0; /* Loại bỏ lề trái */
+      width: auto; /* Cho phép nút co giãn theo nội dung */
+      padding: 10px; /* Giảm padding */
+      justify-content: center;
+    }
+  }
+
+  

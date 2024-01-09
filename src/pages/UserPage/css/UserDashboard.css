@@ -1,0 +1,31 @@
+@media (max-width: 768px) {
+    .userdashboard-container {
+      padding: 0; /* Remove padding for the container on smaller screens */
+
+    }
+  
+    .ant-layout-sider {
+      width: 5% !important;
+      max-width: 10% !important;
+      flex: 0 0 100% !important;
+      margin: 0px 0px 0px -45px;
+      transform: scale(0.6);
+      transform-origin: top center; 
+    }
+  
+    .ant-layout-content {
+      padding: 10px !important; /* Adjust padding for content on smaller screens */
+      margin: 10px -50px 10px -75px !important;
+      transform: scale(0.7);
+      transform-origin: top center; 
+      
+    }
+  
+    .ant-menu-item {
+      padding: 8px 16px !important; /* Adjust padding for menu items */
+    }
+  
+    .demo-logo-vertical {
+      display: none; /* Hide the logo on small screens */
+    }
+  }

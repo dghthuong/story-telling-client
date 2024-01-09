@@ -19,6 +19,13 @@ const StoriesPage = () => {
   const userId = localStorage.getItem("id");
   let navigate = useNavigate();
 
+
+  const handleOutsideClick = () => {
+    setSelectedGenre(""); // Đặt lại lựa chọn thể loại
+    setSearchTerm(""); // Đặt lại từ khóa tìm kiếm
+  };
+
+
   useEffect(() => {
     const fetchStories = async () => {
       try {
@@ -66,8 +73,32 @@ const StoriesPage = () => {
   };
   
 
+  const userIsAdmin = () =>{
+    const userRole = localStorage.getItem('role');
+    return userRole =='admin' // boolean 
+  }
+
   const handlePlayStory = (storyId) => {
     // Navigate to the play story page with the story ID
+    const userId = localStorage.getItem("id");
+    if (!userId) {
+      Swal.fire({
+        title: "Yêu cầu đăng nhập",
+        text: "Hãy đăng nhập để nghe truyện",
+        icon: "info",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Đăng nhập",
+        cancelButtonText: "Huỷ",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate("/login");
+        }
+  
+      });
+      return;
+    }
     navigate(`/play/${storyId}`);
   };
 
@@ -76,25 +107,24 @@ const StoriesPage = () => {
       // Make sure to replace 'userId' with the actual user ID from your auth context or props
       const userId = localStorage.getItem("id");
       if (isStoryInWishlist(storyId)) {
-        message.info("This story is already in your wishlist.");
+        message.info("Câu chuyện đã tồn tại trong mục yêu thích.");
         return;
       }
       if (!userId) {
         Swal.fire({
-          title: "You must be logged in",
-          text: "You must be logged in to add stories to your wishlist.",
+          title: "Yêu cầu đăng nhập",
+          text: "Thao tác chỉ có thể thực hiện khi đăng nhập",
           icon: "info",
           showCancelButton: true,
           confirmButtonColor: "#3085d6",
           cancelButtonColor: "#d33",
-          confirmButtonText: "Login",
-          cancelButtonText: "Cancel",
+          confirmButtonText: "Đăng nhập",
+          cancelButtonText: "Huỷ",
         }).then((result) => {
           if (result.isConfirmed) {
-            // Người dùng chọn 'Login', điều hướng đến trang đăng nhập
             navigate("/login");
           }
-          // Không làm gì cả nếu người dùng chọn 'Cancel'
+    
         });
         return;
       }
@@ -104,7 +134,7 @@ const StoriesPage = () => {
         { storyId }
       );
       if (response.status === 200) {
-        message.success("Story added to wishlist!");
+        message.success("Câu chuyện đã được thêm vào yêu thích!");
 
         // Cập nhật trạng thái local để UI phản ánh sự thay đổi mà không cần làm mới trang
         setWishlist((prevWishlist) => {
@@ -120,17 +150,20 @@ const StoriesPage = () => {
         });
       } else {
         // Xử lý khi thêm không thành công
-        message.error("Failed to add story to wishlist.");
+        message.error("Thêm và yêu thích không thành công ");
       }
     } catch (error) {
       console.error("Error adding story to wishlist:", error);
-      message.error("Failed to add story to wishlist."); // Or handle this with a more user-friendly UI update
+      message.error("Thêm và yêu thích không thành công"); // Or handle this with a more user-friendly UI update
     }
   };
   const mapGenreIdToName = (genreId) => {
     const genre = genres.find((genre) => genre._id === genreId);
     return genre ? genre.name : "";
   };
+
+
+
 
   const filteredStories = stories
     .filter((story) => story.isActive)
@@ -156,7 +189,7 @@ const StoriesPage = () => {
     .slice(indexOfFirstStory, indexOfLastStory)
     .map((story) => ({
       ...story,
-      imageUrl: `${API_URL}/${story.imageUrl}`, // Construct the full image URL
+      imageUrl: `${API_URL}/${story.imageUrl}`, 
     }));
   return (
     <div className={styles.pageContainer}>
@@ -164,6 +197,7 @@ const StoriesPage = () => {
         <Sidebar
           onSearch={setSearchTerm}
           onCategorySelect={setSelectedGenre}
+          onOutsideClick={handleOutsideClick}
           categories={genres.map((genre) => genre.name)}
           selectedCategory={selectedGenre}
         />
@@ -178,6 +212,7 @@ const StoriesPage = () => {
                 onAddToWishlist={handleAddToWishlist}
                 onPlay={() => handlePlayStory(story._id)}
                 isInWishlist={isStoryInWishlist(story._id)} // Add this prop
+                isAdmin={userIsAdmin()}
               />
             </div>
           ))}
@@ -208,5 +243,4 @@ const StoriesPage = () => {
 };
 
 export default StoriesPage;
-
 

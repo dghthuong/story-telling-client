@@ -30,10 +30,10 @@ const App = () => {
     logout();
     navigate("/");
     Swal.fire({
-      title: "Sign Out Successfully!",
-      text: "See you soon!",
+      title: "Đăng xuất thành công!",
+      text: "Hẹn gặp lại!",
       icon: "success",
-      confirmButtonText: "Done",
+      confirmButtonText: "Xác nhận",
     });
   };
 
@@ -76,12 +76,12 @@ const App = () => {
             {
               key: "1",
               icon: <UserOutlined />,
-              label: "Manage User",
+              label: "Quản lý người dùng",
             },
             {
               key: "2",
               icon: <VideoCameraOutlined />,
-              label: "Manage Stories",
+              label: "Quản lý câu chuyện",
             },
             // {
             //   key: "3",
@@ -91,12 +91,12 @@ const App = () => {
             {
               key: "4",
               icon: <UploadOutlined />,
-              label: "Manage Genre",
+              label: "Quản lý thể loại",
             },
             {
               key: "5",
               icon: <LogoutOutlined />,
-              label: "Log out",
+              label: "Đăng xuất",
               onClick: handleLogout,
             },
           ]}

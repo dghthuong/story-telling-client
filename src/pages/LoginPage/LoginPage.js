@@ -21,20 +21,20 @@ const LoginPage = () => {
         console.log(result);
         loginContext(result.data.user._id,email, result.data.token, result.data.user.role); 
         Swal.fire({
-          title: "Login Successfully!",
-          text: "Do you want to continue",
+          title: "Đăng nhập thành công!",
+          text: "Thao tác sẽ được tiếp tục",
           icon: "success",
-          confirmButtonText: "Done",
+          confirmButtonText: "Xác nhận",
         });
         navigate("/");
       })
       .catch((err) => {
         console.log(err)
         Swal.fire({
-          title: "Login Failed!",
-          text: "Login failed. Please try again.",
+          title: "Đăng nhập thất bại!",
+          text: "Đăng nhập thất bại, vui lòng thử lại.",
           icon: "error",
-          confirmButtonText: "Done",
+          confirmButtonText: "Xác nhận",
         });
         navigate("/login");
       });
@@ -43,7 +43,7 @@ const LoginPage = () => {
   return (
     <div className="login-container">
       <div className="login-form-container">
-        <h1 className="title">SIGN IN</h1>
+        <h1 className="title">ĐĂNG NHẬP</h1>
         <form className="login-form" onSubmit={handleSignIn}>
           <input
             type="email"
@@ -54,22 +54,22 @@ const LoginPage = () => {
           />
           <input
             type="password"
-            placeholder="Password"
+            placeholder="Mật khẩu"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
           <div className="form-options">
             <label>
-              <input type="checkbox" /> Remember Me
+              <input type="checkbox" label=""/>  Lưu thông tin
             </label>
             {/* <a href="/forgot-password">Forgot Password</a> */}
           </div>
           <button type="submit" className="sign-in-button">
-            Sign In
+            Đăng nhập
           </button>
           <div className="signup-link">
-            Don't have account? <a href="/register">Sign Up</a>
+            Không có tài khoản? <a href="/register">Đăng ký</a>
           </div>
         </form>
       </div>

@@ -1,12 +1,22 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
 import { UserContext } from "../../context/UserContext";
 import { useNavigate } from "react-router-dom";
-import { getAllUsers, deactivateUser,createUser, updateUser,activateUser } from "./AdminAPI";
-import { PlusSquareOutlined, LockOutlined, EditOutlined, UnlockOutlined } from "@ant-design/icons";
-import { Button, Table, Modal } from "antd";
+import {
+  getAllUsers,
+  deactivateUser,
+  createUser,
+  updateUser,
+  activateUser,
+} from "./AdminAPI";
+import {
+  PlusSquareOutlined,
+  LockOutlined,
+  EditOutlined,
+  UnlockOutlined,
+} from "@ant-design/icons";
+import { Button, Table, Modal, message } from "antd";
 import UserForm from "../../components/Form/UserForm";
-import './css/ManageUsers.css'
-
+import "./css/ManageUsers.css";
 
 const ManageUsers = () => {
   const formRef = useRef(null);
@@ -20,17 +30,38 @@ const ManageUsers = () => {
   const renderAction = (user) => {
     return (
       <>
-      {user.status === "Active" ? (
-        <Button onClick={() => handleDeactiveUser(user.key)} style={{ marginRight: '10px' }}>
-          <UnlockOutlined/>
-        </Button>
-      ) : (
-        <Button onClick={() => handleActivateUser(user.key)} style={{ marginRight: '10px' }}>
-           <LockOutlined/>
-        </Button>
-      )}
+        {user.status === "Kích hoạt" ? (
+          <Button
+            onClick={() => handleDeactiveUser(user.key)}
+            style={{
+              marginRight: "10px",
+              color: "#ffffff",
+              background: "#5865F2",
+            }}
+          >
+            <UnlockOutlined />
+          </Button>
+        ) : (
+          <Button
+            onClick={() => handleActivateUser(user.key)}
+            style={{
+              marginRight: "10px",
+              color: "#ffffff",
+              background: "#5865F2",
+            }}
+          >
+            <LockOutlined />
+          </Button>
+        )}
 
-        <Button onClick={() => handleEditUser(user)}>
+        <Button
+          style={{
+            marginRight: "10px",
+            color: "#ffffff",
+            background: "#F19E3D",
+          }}
+          onClick={() => handleEditUser(user)}
+        >
           <EditOutlined />
         </Button>
       </>
@@ -57,25 +88,25 @@ const ManageUsers = () => {
   ];
 
   const handleDeactiveUser = (userId) => {
-    deactivateUser(userId, token) // Assuming deactivateUser API needs a token
+    deactivateUser(userId) // Assuming deactivateUser API needs a token
       .then(() => {
-        LoadListUser(); // Refresh the list after deactivation
+        LoadListUser();
       })
-      .catch(error => {
-        console.error('Error deactivating user:', error);
+      .catch((error) => {
+        console.error("Error deactivating user:", error);
       });
   };
 
   const handleActivateUser = (userId) => {
-    activateUser(userId, token) 
+    activateUser(userId)
       .then(() => {
-        LoadListUser(); // Refresh the list after activation
+        LoadListUser();
       })
-      .catch(error => {
-        console.error('Error activating user:', error);
+      .catch((error) => {
+        console.error("Error activating user:", error);
       });
   };
-  
+
   const LoadListUser = () => {
     getAllUsers(token).then((response) => {
       if (response.error) {
@@ -83,6 +114,8 @@ const ManageUsers = () => {
       } else {
         const transformedData = response.map((user) => ({
           key: user._id,
+          name: user.name,
+          role: user.role,
           email: user.email,
           status: user.active ? "Kích hoạt" : "Khoá",
           date: new Date(user.date).toLocaleDateString(),
@@ -119,53 +152,79 @@ const ManageUsers = () => {
     setIsModalOpen(true);
   };
 
+  // const handleFormSubmit = (userData) => {
+  //   if (editingUser) {
+  //     updateUser(editingUser.key, userData, token)
+  //       .then(() => {
+  //         setEditingUser(null);
+  //         LoadListUser();
+  //       })
+  //       .catch(error => console.error('Error updating user:', error));
+  //   } else {
+  //     createUser(userData, token)
+  //       .then(() => LoadListUser())
+  //       .catch(error => console.error('Error creating user:', error));
+  //   }
+  //   setIsModalOpen(false);
+  // };
 
   const handleFormSubmit = (userData) => {
-    if (editingUser) {
-      updateUser(editingUser.key, userData, token)
-        .then(() => {
-          setEditingUser(null);
-          LoadListUser();
-        })
-        .catch(error => console.error('Error updating user:', error));
-    } else {
-      createUser(userData, token)
-        .then(() => LoadListUser())
-        .catch(error => console.error('Error creating user:', error));
-    }
-    setIsModalOpen(false);
+    const action = editingUser ? updateUser : createUser;
+    const userId = editingUser ? editingUser.key : undefined;
+
+    action(userId, userData, token)
+      .then(() => {
+        setIsModalOpen(false);
+        setEditingUser(null); // Reset editingUser sau khi submit
+        LoadListUser(); // Cập nhật danh sách người dùng
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        message.error(`Failed to ${editingUser ? "update" : "create"} user.`);
+      });
   };
 
-
   const handleOk = () => {
-    setIsModalOpen(false);
     formRef.current.submit();
   };
 
   return (
     <div style={{ textAlign: "left" }}>
-    <h1>Quản lý người dùng</h1>
-    <Button
-      className="manageUsers-btn"
-      onClick={showModal}
-    >
-      <PlusSquareOutlined /> Thêm người dùng 
-    </Button>
-    <h2> </h2>
-    <Table rowSelection={rowSelection} columns={columns} dataSource={users} />
-    <Modal
-      title={editingUser ? "Edit User" : "Create New User"}
+      <h1>Quản lý người dùng</h1>
+      <Button className="manageUsers-btn" onClick={showModal}>
+        <PlusSquareOutlined /> Thêm người dùng
+      </Button>
+      <h2> </h2>
+      <Table columns={columns} dataSource={users} />
+      {/* <Modal
+      title={editingUser ? "Chỉnh sửa thông tin người dùng" : "Khởi tạo người dùng "}
       open={isModalOpen}
       onOk={handleOk}
       onCancel={() => { setIsModalOpen(false); setEditingUser(null); }}
-    >
-      <UserForm 
+    > */}
+      <Modal
+        title={
+          editingUser
+            ? "Chỉnh sửa thông tin người dùng"
+            : "Khởi tạo người dùng "
+        }
+        open={isModalOpen}
+        onOk={handleOk}
+        onCancel={handleCancel}
+      >
+        {/* <UserForm 
         ref={formRef}
         initialUserData={editingUser} 
         onSubmit={handleFormSubmit} 
-      />
-    </Modal>
-  </div>
+      /> */}
+        <UserForm
+          ref={formRef}
+          initialUserData={editingUser}
+          onSubmit={handleFormSubmit}
+          isEditing={Boolean(editingUser)} // Thêm prop này để thông báo cho form về trạng thái
+        />
+      </Modal>
+    </div>
   );
 };
 

@@ -25,7 +25,6 @@ export const deactivateUser = async (userId) => {
     try {
       // Send a PUT request to update the user's active status to false
       const response = await axios.put(`${API_URL}/api/deactive-user/${userId}`);
-      
       // Check if the request was successful
       if (response.status === 200) {
         console.log('User deactivated successfully');
@@ -40,9 +39,7 @@ export const deactivateUser = async (userId) => {
     }
   };
 
-
-
-
+  
   export const createUser = async (userData, token) => {
     try {
       const response = await axios.post(`${API_URL}/api/create-user`, userData, {

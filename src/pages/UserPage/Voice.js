@@ -46,6 +46,16 @@ const sentences = [
   "Ngày xửa ngày xưa, có hai chị em cùng cha khác mẹ tên là Tấm và Cám. Mẹ Tấm mất sớm, còn cha Tấm cưới thêm mẹ Cám, cha Tấm vô cùng hết mực yêu thương cô, nhưng rồi ông bệnh nặng, không lâu sau đó thì qua đời",
 ];
 
+
+const SentenceContainer = styled.div`
+  background-color: white;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+  margin-bottom: 20px;
+`;
+
+
 const AudioRecorder = () => {
   const { user } = useContext(UserContext);
   const [currentSentenceIndex, setCurrentSentenceIndex] = useState(0);
@@ -65,6 +75,7 @@ const AudioRecorder = () => {
   const canvasCtxRef = useRef(null);
   const [statusMessage, setStatusMessage] = useState('');
   const [progress, setProgress] = useState(0);
+  const [savingRecordings, setSavingRecordings] = useState(false);
   const navigate = useNavigate(); 
 
   useEffect(() => {
@@ -91,6 +102,10 @@ const AudioRecorder = () => {
 
     fetchVoiceId();
   }, []);
+
+  const handleNavigate = () => {
+    navigate('/user/dashboard');
+  };
 
   const getMicrophonePermission = async () => {
     if (!("MediaRecorder" in window)) {
@@ -322,6 +337,7 @@ const AudioRecorder = () => {
     });
 
     try {
+      setSavingRecordings(true);
       // Wait for all blobs to be appended to formData
       await Promise.all(blobPromises);
       const blobs = await Promise.all(blobPromises2);
@@ -338,28 +354,30 @@ const AudioRecorder = () => {
       const voiceProcessingResult = await validateAndTrainVoice(voiceFile);
       if (voiceProcessingResult) {
         console.log("Voice processing successful");
+        setSavingRecordings(false); 
       } else {
         console.error("Voice processing failed");
       }
       message.success('Recordings saved successfully!');
       Swal.fire({
-        title: 'Success!',
-        text: 'Your recordings have been saved and processed successfully.',
+        title: 'Thành công!',
+        text: 'Giọng đọc đã được ghi âm và xử lý thành công!',
         icon: 'success',
         showCancelButton: true,
-        confirmButtonText: 'Record more',
-        cancelButtonText: 'Go to Manage Voice',
+        confirmButtonText: 'Thu âm thêm',
+        cancelButtonText: 'Quản lý',
       }).then((result) => {
         if (result.isConfirmed) {
           // User chose to record more, you can reset the state to start a new recording
           window.location.reload();
         } else {
           // User chose to go to manage voice, navigate to that page
-          navigate('/user/dashboard?key=3');
+          navigate('/user/dashboard');
         }
       });
     } catch (error) {
       console.error("Error uploading recordings: ", error);
+      setSavingRecordings(false);
     } 
   };
 
@@ -367,8 +385,12 @@ const AudioRecorder = () => {
 
   return (
     <>
+       <div style ={{textAlign:'Left'}}>
+     
+        </div>
       <RecorderContainer>
         <div style={{ padding: "20px" }}>
+       
           <h2>THÊM GIỌNG ĐỌC</h2>
           <Input
             type="text"
@@ -380,13 +402,20 @@ const AudioRecorder = () => {
         <h4>
           Hãy đọc rõ ràng câu cần ghi âm
         </h4>
+        <SentenceContainer> <h2> {sentences[currentSentenceIndex]}</h2></SentenceContainer>
+        <Waveform ref={canvasRef} />
+
+        {savingRecordings && (
         <Space direction="vertical" style={{ width: '100%' }}>
           <Progress percent={progress} status="active" />
           <p>{statusMessage}</p>
         </Space>
-        <h4>{sentences[currentSentenceIndex]}</h4>
-        <Waveform ref={canvasRef} />
+      )}
+  
+     
+        
         <Controls>
+          
           <Button
             icon={<LeftOutlined />}
             onClick={previousSentence}
@@ -396,7 +425,7 @@ const AudioRecorder = () => {
             <audio src={recordings[currentSentenceIndex]} controls />
           )}
           <RecordButton onClick={recording ? stopRecording : startRecording}>
-            {recording ? "Stop" : "Record"}
+            {recording ? "Dừng" : "Ghi âm"}
           </RecordButton>
           <Button
             icon={<RightOutlined />}
@@ -405,14 +434,16 @@ const AudioRecorder = () => {
           />
         </Controls>
         <h1> </h1>
+      
         <Button
           onClick={uploadRecordings}
           disabled={!recordingTitle || !allRecorded}
         >
-          Save Recordings
+          Lưu giọng đọc
         </Button>
+        <Button style={{marginTop:'10px', width:125, height:35}} onClick={handleNavigate}>Trở lại</Button>
 
-      </RecorderContainer>
+      </RecorderContainer>  
     </>
   );
 };

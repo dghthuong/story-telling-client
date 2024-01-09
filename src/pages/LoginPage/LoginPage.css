@@ -1,68 +1,88 @@
 .login-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
 
-  }
+.login-form-container {
+  background: white;
+  padding: 50px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 500px;
+  height: 300px;
   
+}
+
+.title {
+  font-size: 32px;
+  font-weight: 600;
+  line-height: 110%; /* 35.2px */
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.login-form input {
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  height: 20px;
+}
+
+.form-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.sign-in-button {
+  background-color: #029FAE; /* Adjust the color to match the image */
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.signup-link {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.signup-link a {
+  color: #029FAE; /* Adjust the color to match the image */
+  text-decoration: none;
+}
+
+@media only screen and (max-width: 46.1875em) {
   .login-form-container {
-    background: white;
-    padding: 50px;
-    border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 500px;
-    height: 300px;
-    flex-shrink: 0;
+    transform: scale(0.5); /* Example: scale down to 80% of the original size */
+    transform-origin: center; 
   }
-  
-  .title {
 
-    font-size: 32px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: 110%; /* 35.2px */
-    text-align: center;
-    margin-bottom: 20px;
+  .title {
+    font-size: 24px; /* Smaller font size */
+    margin-bottom: 30px; /* Reduce margin */
   }
-  
-  .login-form {
-    display: flex;
-    flex-direction: column;
-    
-  }
-  
+
   .login-form input {
-    margin-bottom: 10px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    height: 20px;
+    padding: 15px; /* Adjust padding for better touch targets */
+    font-size: 13px; /* Increase font size for readability */
   }
-  
-  .form-options {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-  }
-  
+
   .sign-in-button {
-    background-color: #029FAE; /* Adjust the color to match the image */
-    color: white;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+    padding: 15px; /* Increase padding for a larger touch target */
   }
-  
+
   .signup-link {
-    text-align: center;
-    margin-top: 20px;
+    margin-top: 15px; /* Adjust spacing */
   }
-  
-  .signup-link a {
-    color: #029FAE; /* Adjust the color to match the image */
-    text-decoration: none;
-  }
-  
+}

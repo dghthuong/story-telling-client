@@ -1,11 +1,11 @@
 import React from "react";
 
-const UserContext = React.createContext({_id: "",email: "",role: "", auth: false });
+const UserContext = React.createContext({_id: "",email: "",role: "", name:"" ,auth: false });
 
 const UserProvider = ({ children }) => {
-  const [user, setUser] = React.useState({_id:"",email: "",role:"",auth: false });
+  const [user, setUser] = React.useState({_id:"",email: "",role:"", name:"",auth: false });
 
-  const loginContext = (id,email,token,role) => {
+  const loginContext = (id,email,token,role, name) => {
     setUser((user) => ({
       id: id,
       email: email,
@@ -16,6 +16,7 @@ const UserProvider = ({ children }) => {
     localStorage.setItem("token",token);
     localStorage.setItem("role",role);
     localStorage.setItem("email",email); 
+    localStorage.setItem("name", name); 
   };
 
   const logout = () => {
@@ -25,6 +26,7 @@ const UserProvider = ({ children }) => {
       id:"",
       email: "",
       role: "",
+      name: "", 
       auth: false,
     }));
   };

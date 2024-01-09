@@ -1,12 +1,17 @@
 .wishlist-container {
-  width: 80%;
-  margin: 40px auto;
+  width: 100%;
+  height: 100%;
+  margin: 20px auto;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   overflow: hidden;
   background-color: #fff;
-  position: fixed
+  position: fixed;
+  text-align: left;
+ 
 }
+
+
 
 .wishlist-item {
   border-bottom: 1px solid #eee;
@@ -49,10 +54,12 @@
   border-radius: 4px;
   cursor: pointer;
   transition: all 0.3s;
+  display: block;
 }
 
 .actions button:hover {
   opacity: 0.9;
+  display: block;
 }
 
 /* Style for the Ant Design components (if needed) */
@@ -60,10 +67,52 @@
   background-color: #1890ff;
   border-color: #1890ff;
   color: #fff;
+  display: block;
 }
 
 .ant-btn-danger {
   background-color: #ff4d4f;
   border-color: #ff4d4f;
-  gap:'5px'
+  gap:'5px';
+  display: block;
+}
+/* Wishlist.css */
+
+/* Existing styles... */
+
+/* Responsive styles for mobile devices */
+/* .wishlist-container {
+  width: 80%;
+  margin: 20px auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #fff;
+  position: relative; 
+} */
+
+/* Adjust the flex properties of wishlist items for mobile */
+@media screen and (max-width: 768px) {
+  .wishlist-container {
+    /* Scale the container to 0.8 of its original size, adjust the factor as needed */
+    transform: scale(0.6);
+    transform-origin: top center; /* Ensures that the top of the container stays in place */
+
+    width: 200%; /* Make the container full width on mobile */
+    height: 200%;
+    margin: 20px 0px 0px -190px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #fff;
+    position: fixed; /* Consider using 'absolute' if 'fixed' positioning causes issues */
+    top: 40px; /* Adjust the top position to avoid overlapping with the header */
+    bottom: 10px; /* Adjust the bottom position to avoid overlapping with the footer */
+    left: 500; /* Align to the left edge */
+    right: 500; /* Align to the right edge */
+    text-align: left;
+  }
+
+
+
 }

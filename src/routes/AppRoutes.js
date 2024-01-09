@@ -23,10 +23,10 @@ const AppRoutes = () => {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/admin/dashboard" element={<AdminRoutes><App/></AdminRoutes>}/>
-        <Route path = "/story" element ={<StoriesPage/>}/> 
-        <Route path="/user/dashboard" element={<UserRoutes><UserPage /></UserRoutes>} />
+        <Route path ="/story" element ={<StoriesPage/>}/> 
+        <Route path="/user/dashboard" element={<UserRoutes><UserPage/></UserRoutes>} />
         <Route path="/user/wishlist" element={<UserRoutes><WishlistPage/></UserRoutes>} />
-        <Route path ="/user/playlist" element={<PlaylistPage/>}/>  
+        <Route path ="/user/playlist/:userId" element={<PlaylistPage/>}/>  
         <Route path="/play/:storyId" element={<PlayStories />} />
         <Route path="/user/record" element={<UserRoutes><AudioRecorder/></UserRoutes>} />
         <Route path="/user/manage-voice" element={<UserRoutes><AudioList/></UserRoutes>} />

@@ -1,33 +1,38 @@
 import React, { useState } from "react";
 import "./RegisterPage.css";
- // Make sure to create a corresponding CSS file to style your components
+// Make sure to create a corresponding CSS file to style your components
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
+import {message} from 'antd'
 
 const API_URL = process.env.REACT_APP_API_URL;
-
 
 const RegisterPage = () => {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
+  const [confirmPassword, setConfirmPassword] = useState();
   const [error, setError] = useState(null);
 
   const navigate = useNavigate();
 
   const handleSignUp = (event) => {
     event.preventDefault();
+    if (password !== confirmPassword) {
+      message.error("Mật khẩu nhập lại không khớp!"); // Hiển thị lỗi nếu mật khẩu không khớp
+      return;
+    } 
     axios
       .post(`${API_URL}/api/signup`, { email, password })
       .then((result) => {
         console.log(result);
         Swal.fire({
-          title: "Sign Up Successfully!",
-          text: "Please Sign In",
+          title: "Đăng ký thành công!",
+          text: "Vui lòng đăng nhập",
           icon: "success",
-          confirmButtonText: "Done",
+          confirmButtonText: "Xác nhận",
         });
-        navigate('/login'); 
+        navigate("/login");
       })
       .catch((err) => console.log(err));
   };
@@ -35,7 +40,7 @@ const RegisterPage = () => {
   return (
     <div className="login-container">
       <div className="login-form-container">
-        <h1 className="title">SIGN UP</h1>
+        <h1 className="title">ĐĂNG KÝ</h1>
         <form className="login-form" onSubmit={handleSignUp}>
           <input
             type="email"
@@ -46,22 +51,29 @@ const RegisterPage = () => {
           />
           <input
             type="password"
-            placeholder="Password"
+            placeholder="Mật khẩu"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
+          <input
+            type="password"
+            placeholder="Nhập lại mật khẩu"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            required
+          />
           <div className="form-options">
             <label>
-              <input type="checkbox" /> Remember Me
+              <input type="checkbox" /> Lưu thông tin
             </label>
             {/* <a href="/forgot-password">Forgot Password</a> */}
           </div>
           <button type="submit" className="sign-in-button">
-            Sign Up
+            Đăng ký
           </button>
           <div className="signup-link">
-            Having account? <a href="/login">Sign In</a>
+            Đã có tài khoản? <a href="/login">Đăng nhập</a>
           </div>
         </form>
       </div>

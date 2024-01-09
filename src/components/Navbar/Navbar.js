@@ -5,19 +5,23 @@ import { UserContext } from "../../context/UserContext";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import UserRoutes from "../../routes/UserRoutes";
-import { UserOutlined, ProfileOutlined , HeartTwoTone} from "@ant-design/icons";
-import axios from 'axios' 
+import {
+  UserOutlined,
+  ProfileOutlined,
+  HeartTwoTone,
+  HeartFilled,
+} from "@ant-design/icons";
+import axios from "axios";
 
-
-
-const API_URL = process.env.REACT_APP_API_URL; 
+const API_URL = process.env.REACT_APP_API_URL;
 
 const Navbar = () => {
   const navigate = useNavigate();
   const { user, logout } = useContext(UserContext);
-  const userId = localStorage.getItem("id")
-  const [userInfo , setUserInfo] = useState([]); 
-  
+  const userId = localStorage.getItem("id");
+  const name = localStorage.getItem("name"); 
+  const [userInfo, setUserInfo] = useState([]);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -28,24 +32,38 @@ const Navbar = () => {
       }
     };
     fetchData();
-  },[]);
-  
-  const handleLogout = () => {
-    logout();
-    navigate("/");
-    Swal.fire({
-      title: "Sign Out Successfully!",
-      text: "See you soon!",
-      icon: "success",
-      confirmButtonText: "Done",
-    });
-  };
+  });
+
+
   return (
     <>
       <nav className="navbar">
-        <div className="logo"  >STORY TELLING</div>
+        <div className="logo">STORY TELLING</div>
         <div className="menu">
           {user && user.auth === true ? (
+            <>
+              <NavLink to="/" activeClassName="active" className="navbar-link">
+                Trang chủ
+              </NavLink>
+
+              <NavLink
+                to="/story"
+                activeClassName="active"
+                className="navbar-link"
+              >
+                Kho truyện
+              </NavLink>
+              {user.role === "user" && (
+                <NavLink
+                  to={`/user/playlist/${userId}`}
+                  activeClassName="active"
+                  className="navbar-link"
+                >
+                  Danh sách phát
+                </NavLink>
+              )}
+            </>
+          ) : (
             <>
               <NavLink to="/" activeClassName="active" className="nav-link">
                 Trang chủ
@@ -56,30 +74,7 @@ const Navbar = () => {
                 activeClassName="active"
                 className="nav-link"
               >
-                Kho truyện 
-              </NavLink>
-              {user.role === "user" && (
-                <NavLink
-                  to="/user/playlist"
-                  activeClassName="active"
-                  className="nav-link"
-                >
-                  Danh sách phát
-                </NavLink>
-              )}
-            </>
-          ) : (
-            <>
-              <NavLink to="/" activeClassName="active" className="nav-link">
-                Home
-              </NavLink>
-
-              <NavLink
-                to="/story"
-                activeClassName="active"
-                className="nav-link"
-              >
-                Story
+                Kho truyện
               </NavLink>
             </>
           )}
@@ -87,7 +82,7 @@ const Navbar = () => {
         <div className="auth">
           {user && user.auth === true ? (
             <>
-              <span>{userInfo.name}</span>
+              <spanm className ="navbar-link">{userInfo.name}</spanm>
               {user.role === "admin" && (
                 <>
                   <NavLink
@@ -107,7 +102,7 @@ const Navbar = () => {
                     activeClassName="active"
                     className="wishlist-btn"
                   >
-                    <HeartTwoTone twoToneColor="#ff0000" />
+                    <HeartFilled style={{ color: "#ff0000" }} />
                   </NavLink>
 
                   <NavLink
@@ -127,7 +122,7 @@ const Navbar = () => {
                 activeClassName="active"
                 className="login-btn"
               >
-                Login
+                Đăng nhập
               </NavLink>
 
               <NavLink
@@ -135,7 +130,7 @@ const Navbar = () => {
                 activeClassName="active"
                 className="register-btn"
               >
-                Register
+                Đăng ký
               </NavLink>
             </>
           )}
