@@ -17,8 +17,8 @@
     text-transform: capitalize;
     text-align: left;
     margin-bottom: 5rem;
-    width: 753px;
-    height: 272px;
+    width: 1000px;
+    height: 270px;
     flex-shrink: 2;
     display: flex;
     padding-left: 140px;
@@ -45,17 +45,17 @@
 
   @media screen and (max-width: 600px) {
     .header {
-      padding: 1rem;
+      padding: 2rem;
     }
   
     .header h1 {
-      font-size: 40px; /* Giảm kích thước font */
-      text-align: center; /* Căn giữa cho tiêu đề */
-      margin-bottom: 2rem;
-      width: auto; /* Auto width để phù hợp với màn hình */
-      height: auto; /* Auto height */
-      padding-left: 0; /* Loại bỏ padding trái */
-      display: block; /* Sử dụng block thay vì flex */
+      font-size: 50px; 
+      text-align: center;
+      margin-bottom: 1 rem;
+      width: auto; 
+      height: auto;
+      padding-left: 0; 
+      display: block;
     }
   
     .register-now-btn {

@@ -40,6 +40,7 @@ const ManageStories = () => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatingStoryId, setGeneratingStoryId] = useState(null);
   const [confirmLoading, setConfirmLoading] = useState(false);
+  const [storyToEdit, setStoryToEdit] = useState(null); // Thêm dòng này
 
   const [form] = Form.useForm();
 
@@ -91,19 +92,28 @@ const ManageStories = () => {
 
   const editStory = (storyId) => {
     const storyToEdit = stories.find((story) => story._id === storyId);
-   
+
     if (storyToEdit) {
+      setStoryToEdit(storyToEdit);
+
+      // Tìm tên thể loại thay vì id
+      const genreName = genres.find(
+        (genre) => genre._id === storyToEdit.genre
+      )?.name;
+
       const genreValue = {
-        value: storyToEdit.genre._id,
-        label: storyToEdit.genre,
+        key: storyToEdit.genre, // Đổi từ storyToEdit.genre._id sang storyToEdit.genre
+        label: genreName,
       };
 
       form.setFieldsValue({
         title: storyToEdit.title,
         description: storyToEdit.description,
         author: storyToEdit.author,
-        genre: genreValue,
+        isGenerated: storyToEdit.isGenerated,
+        genre: genreValue, // Đổi thành genreValue
       });
+
       setImagePreview(`${API_URL}/${storyToEdit.imageUrl}`);
       setIsModalOpen(true);
       setEditingStoryId(storyId);
@@ -150,79 +160,27 @@ const ManageStories = () => {
     return URL.createObjectURL(response.data);
   };
 
-  // const generateAndSaveStory = async (storyId, description) => {
-  //   const handleOk = async () => {
-  //     setConfirmLoading(false); 
-  //     try {
-  //       // Thay đổi 'voiceId' và 'sessionId' theo nhu cầu
-  //       setGeneratingStoryId(storyId);
-
-  //       const sessionId = "1234";
-
-  //       const audioPath = await generateAudio(sessionId, description);
-  //       const audioUrl = await retrieveAudio(audioPath);
-
-  //       const response = await fetch(audioUrl);
-  //       const audioBlob = await response.blob();
-
-  //       const formData = new FormData();
-  //       formData.append("audioFile", audioBlob, `${storyId}.wav`);
-
-  //       const uploadResponse = await axios.post(
-  //         `${API_URL}/api/stories/${storyId}/upload-default`, // Đường dẫn API có thể khác
-  //         formData,
-  //         { headers: { "Content-Type": "multipart/form-data" } }
-  //       );
-
-  //       if (uploadResponse.status === 200) {
-  //         message.success("Story audio generated and saved successfully.");
-  //         fetchStories(); // Cập nhật danh sách câu chuyện
-  //       } else {
-  //         message.error("Failed to save the generated story audio.");
-  //       }
-  //     } catch (error) {
-  //       console.error("Error in generating story audio:", error);
-  //       message.error("Failed to generate story audio.");
-  //     } finally {
-  //       setGeneratingStoryId(null);
-  //       setConfirmLoading(true);  // Quá trình hoàn thành, đặt lại loading state
-
-  //     }
-  //   };
-
-  //   Modal.confirm({
-  //     title: "Bạn có muốn tạo âm thanh cho câu chuyện này không?",
-  //     onOk: handleOk,
-  //     okText: "Xác nhận",
-  //     cancelText: "Huỷ",
-  //     confirmLoading: confirmLoading,
-  //   });
-  // };
-
-
   const generateAndSaveStory = async (storyId, description) => {
     const handleOk = async () => {
-      // Không cần thiết lập confirmLoading ở đây nếu bạn không muốn nút hiển thị loading
       try {
-        // Thay đổi 'voiceId' và 'sessionId' theo nhu cầu
         setGeneratingStoryId(storyId);
-  
+
         const sessionId = "1234";
         const audioPath = await generateAudio(sessionId, description);
         const audioUrl = await retrieveAudio(audioPath);
-  
+
         const response = await fetch(audioUrl);
         const audioBlob = await response.blob();
-  
+
         const formData = new FormData();
         formData.append("audioFile", audioBlob, `${storyId}.wav`);
-  
+
         const uploadResponse = await axios.post(
           `${API_URL}/api/stories/${storyId}/upload-default`, // Đường dẫn API có thể khác
           formData,
           { headers: { "Content-Type": "multipart/form-data" } }
         );
-  
+
         if (uploadResponse.status === 200) {
           message.success("Story audio generated and saved successfully.");
           fetchStories(); // Cập nhật danh sách câu chuyện
@@ -236,7 +194,7 @@ const ManageStories = () => {
         setGeneratingStoryId(null);
       }
     };
-  
+
     Modal.confirm({
       title: "Bạn có muốn tạo âm thanh cho câu chuyện này không?",
       okText: "Xác nhận",
@@ -248,20 +206,31 @@ const ManageStories = () => {
       // Bỏ trạng thái loading ở đây nếu bạn không muốn nút hiển thị loading
     });
   };
-  
+
   const handleAddOrUpdateStory = async () => {
     try {
       const values = await form.validateFields();
-      values.genre = values.genre.value;
       const formData = new FormData();
 
       // Thêm các trường dữ liệu text vào formData
+      // for (const [key, value] of Object.entries(values)) {
+      //   if (key !== "imageUrl" && key !== "defaultVoice") {
+      //     formData.append(
+      //       key,
+      //       value instanceof Array ? value.join(",") : value
+      //     );
+      //   }
+      // }
       for (const [key, value] of Object.entries(values)) {
         if (key !== "imageUrl" && key !== "defaultVoice") {
-          formData.append(
-            key,
-            value instanceof Array ? value.join(",") : value
-          );
+          if (key === "genre") {
+            formData.append(key, value.key); // Truyền giá trị ID của thể loại
+          } else {
+            formData.append(
+              key,
+              value instanceof Array ? value.join(",") : value
+            );
+          }
         }
       }
 
@@ -322,7 +291,7 @@ const ManageStories = () => {
           <EditOutlined />
         </Button>
         <Button
-          style={{ marginLeft: 8,color: "#ffFFFF", background: "#ff0000" }}
+          style={{ marginLeft: 8, color: "#ffFFFF", background: "#ff0000" }}
           onClick={() => removeStory(record._id)}
         >
           <DeleteFilled />
@@ -363,6 +332,12 @@ const ManageStories = () => {
       dataIndex: "isActive",
       key: "isActive",
       render: (isActive) => (isActive ? "Hiển thị" : "Ẩn"),
+    },
+    {
+      title: "Giọng mặc định",
+      dataIndex: "isGenerated",
+      key: "isGenerated",
+      render: (isGenerated) => (isGenerated ? "Hoàn thành" : "Chưa xử lý"),
     },
     {
       title: "Hành động",
@@ -447,16 +422,7 @@ const ManageStories = () => {
           <Form.Item name="author" label="Tác giả" rules={[{ required: true }]}>
             <Input />
           </Form.Item>
-          {/* <Form.Item name="genre" label="Thể loại" rules={[{ required: true }]}>
-           
-            <Select placeholder="Chọn thể loại">
-              {genres.map((genre) => (
-                <Select.Option key={genre._id} value={genre._id}>
-                  {genre.name}
-                </Select.Option>
-              ))}
-            </Select>
-          </Form.Item> */}
+
           <Form.Item name="genre" label="Thể loại" rules={[{ required: true }]}>
             <Select labelInValue placeholder="Chọn thể loại">
               {genres.map((genre) => (

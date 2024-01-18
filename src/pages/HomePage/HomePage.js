@@ -12,15 +12,15 @@ function HomePage() {
     <>
       <div className="homepage">
         <header className="header">
-          <h1>TELL A STORY WITH YOUR VOICE</h1>
+          <h1>KỂ CHUYỆN BẰNG GIỌNG NÓI CỦA BẠN</h1>
           {!token && user.auth === true &&(
             <Link to="/register" className="register-now-btn">
-              REGISTER NOW
+              ĐĂNG KÝ NGAY
             </Link>
           )}
 
             <Link to="/story" className="register-now-btn">
-              EXPLORE STORY
+              KHÁM PHÁ 
             </Link>
         </header>
       </div>
