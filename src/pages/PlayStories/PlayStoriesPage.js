@@ -34,15 +34,18 @@ function PlayStories() {
         <>
           <div className="story-details">
             <img className="story-cover" src={`${API_URL}/${story.imageUrl}`} alt={story.title} />
+            
+            <h2 className="story-author">Tác giả: {story.author}</h2>
             <h1 className="story-title">{story.title}</h1>
-            <p className="story-description">{story.description}</p>
-            <h2 className="story-author">{story.author}</h2>
-            <p className="story-year">{story.year}</p>
-            <div className="audio-player-container">
             <audio controls autoPlay className="audio-player">
               <source src={`${API_URL}/${story.generatedVoice}`} type="audio/wav" />
               Your browser does not support the audio element.
             </audio>
+            <p className="story-description">{story.description}</p>
+            
+            <p className="story-year">{story.year}</p>
+            <div className="audio-player-container">
+
           </div>
           </div>
         </>

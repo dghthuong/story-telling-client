@@ -63,12 +63,6 @@
 }
 
 /* Style for the Ant Design components (if needed) */
-.ant-btn-primary {
-  background-color: #1890ff;
-  border-color: #1890ff;
-  color: #fff;
-  display: block;
-}
 
 .ant-btn-danger {
   background-color: #ff4d4f;
