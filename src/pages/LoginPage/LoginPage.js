@@ -63,7 +63,7 @@ const LoginPage = () => {
             <label>
               <input type="checkbox" label=""/>  Lưu thông tin
             </label>
-            {/* <a href="/forgot-password">Forgot Password</a> */}
+            <a style={{color:'#029FAE' }} href="/forgot-password">Quên mật khẩu?</a>
           </div>
           <button type="submit" className="sign-in-button">
             Đăng nhập

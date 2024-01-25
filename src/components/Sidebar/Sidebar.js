@@ -1,41 +1,50 @@
-import React,{useRef, useEffect} from 'react';
-import {Input} from 'antd'
+import React, { useRef, useState, useEffect } from "react";
+import { Input } from "antd";
 
+const Sidebar = ({ onSearch, onCategorySelect, categories, selectedCategory }) => {
+  const sidebarRef = useRef();
+  const [clickedInside, setClickedInside] = useState(false);
 
-const Sidebar = ({ onSearch, onCategorySelect, categories, selectedCategory,onOutsideClick }) => {
-  const sidebarRef = useRef(); 
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
-        onOutsideClick(); // Hàm này sẽ hủy việc lọc
+    const handleClick = () => {
+      if (clickedInside) {
+        // Nếu đã click vào bên trong, thì không xử lý đóng sidebar
+        setClickedInside(false);
+        return;
       }
+
+      // Xử lý đóng sidebar khi click bên ngoài
+      onCategorySelect(""); // Đặt selectedCategory về trạng thái mặc định
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("click", handleClick);
+
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("click", handleClick);
     };
-  }, [onOutsideClick]);
+  }, [clickedInside, onCategorySelect]);
 
   return (
-    <div ref={sidebarRef} style={{ textAlign:'left' ,padding: "20px" }}>
+    <div ref={sidebarRef} style={{ textAlign: "left", padding: "20px" }}>
       <div style={{ marginBottom: "20px" }}>
-        <h3 style={{textAlign:'left'}}>Tìm kiếm</h3>
-        <Input 
+        <h3 style={{ textAlign: "left" }}>Tìm kiếm</h3>
+        <Input
           type="text"
           placeholder="Tìm kiếm câu chuyện...."
-          onChange={e => onSearch(e.target.value)}
-          style={{ width: "200px", height: "30px" }}
+          onChange={(e) => onSearch(e.target.value)}
         />
       </div>
       <div>
-        {categories.map(category => (
+        {categories.map((category) => (
           <p
             key={category}
-            onClick={() => onCategorySelect(category)}
+            onClick={() => {
+              onCategorySelect(category);
+              setClickedInside(true); // Thay đổi trạng thái khi click vào thể loại
+            }}
             style={{
-              cursor: 'pointer',
-              fontWeight: selectedCategory === category ? 'bold' : 'normal'
+              cursor: "pointer",
+              fontWeight: selectedCategory === category ? "bold" : "normal",
             }}
           >
             {category}

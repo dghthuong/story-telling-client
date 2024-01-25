@@ -63,7 +63,7 @@ const ManageStories = () => {
 
     const storiesWithGenreName = fetchedStories.map((story) => ({
       ...story,
-      genre: genreMap.get(story.genre),
+      genre: genreMap.get(String(story.genre)),
     }));
     setStories(storiesWithGenreName);
   };
@@ -92,33 +92,38 @@ const ManageStories = () => {
 
   const editStory = (storyId) => {
     const storyToEdit = stories.find((story) => story._id === storyId);
-
+    
+  
     if (storyToEdit) {
       setStoryToEdit(storyToEdit);
-
+  
       // Tìm tên thể loại thay vì id
       const genreName = genres.find(
-        (genre) => genre._id === storyToEdit.genre
-      )?.name;
+        (genre) => storyToEdit.genre === genre.name
+      )?._id;
+
+      console.log(storyToEdit.genre); 
+
 
       const genreValue = {
-        key: storyToEdit.genre, // Đổi từ storyToEdit.genre._id sang storyToEdit.genre
-        label: genreName,
+        key: genreName, 
+        label: storyToEdit.genre,
       };
-
+  
       form.setFieldsValue({
         title: storyToEdit.title,
         description: storyToEdit.description,
         author: storyToEdit.author,
         isGenerated: storyToEdit.isGenerated,
-        genre: genreValue, // Đổi thành genreValue
+        genre: genreValue,
       });
-
+  
       setImagePreview(`${API_URL}/${storyToEdit.imageUrl}`);
       setIsModalOpen(true);
       setEditingStoryId(storyId);
     }
   };
+  
 
   //API Generated:
   const generateAudio = async (sessionId, text) => {
@@ -207,20 +212,55 @@ const ManageStories = () => {
     });
   };
 
+  // const handleAddOrUpdateStory = async () => {
+  //   try {
+  //     const values = await form.validateFields();
+  //     const formData = new FormData();
+  //     for (const [key, value] of Object.entries(values)) {
+  //       if (key !== "imageUrl" && key !== "defaultVoice") {
+  //         if (key === "genre") {
+  //           formData.append(key, value.key); // Truyền giá trị ID của thể loại
+  //         } else {
+  //           formData.append(
+  //             key,
+  //             value instanceof Array ? value.join(",") : value
+  //           );
+  //         }
+  //       }
+  //     }
+
+  //     // Thêm file ảnh vào formData nếu có
+  //     const imageField = form.getFieldValue("imageUrl");
+  //     if (imageField && imageField.fileList.length > 0) {
+  //       // Chỉ lấy file cuối cùng trong danh sách nếu có nhiều file được chọn
+  //       const file =
+  //         imageField.fileList[imageField.fileList.length - 1].originFileObj;
+  //       formData.append("imageUrl", file);
+  //     }
+
+  //     if (editingStoryId) {
+  //       await updateStory(editingStoryId, formData); // Chắc chắn rằng API có thể xử lý formData
+  //     } else {
+  //       await addStory(formData); // Chắc chắn rằng API có thể xử lý formData
+  //     }
+
+  //     // Reset form và state sau khi hoàn thành
+  //     form.resetFields();
+  //     setImagePreview("");
+  //     setIsModalOpen(false);
+  //     fetchStories();
+  //     setEditingStoryId(null);
+  //   } catch (error) {
+  //     console.log("Validation Failed:", error);
+  //   }
+  // };
+
   const handleAddOrUpdateStory = async () => {
     try {
       const values = await form.validateFields();
       const formData = new FormData();
-
+  
       // Thêm các trường dữ liệu text vào formData
-      // for (const [key, value] of Object.entries(values)) {
-      //   if (key !== "imageUrl" && key !== "defaultVoice") {
-      //     formData.append(
-      //       key,
-      //       value instanceof Array ? value.join(",") : value
-      //     );
-      //   }
-      // }
       for (const [key, value] of Object.entries(values)) {
         if (key !== "imageUrl" && key !== "defaultVoice") {
           if (key === "genre") {
@@ -233,22 +273,21 @@ const ManageStories = () => {
           }
         }
       }
-
+  
       // Thêm file ảnh vào formData nếu có
       const imageField = form.getFieldValue("imageUrl");
       if (imageField && imageField.fileList.length > 0) {
         // Chỉ lấy file cuối cùng trong danh sách nếu có nhiều file được chọn
-        const file =
-          imageField.fileList[imageField.fileList.length - 1].originFileObj;
+        const file = imageField.fileList[imageField.fileList.length - 1].originFileObj;
         formData.append("imageUrl", file);
       }
-
+  
       if (editingStoryId) {
         await updateStory(editingStoryId, formData); // Chắc chắn rằng API có thể xử lý formData
       } else {
         await addStory(formData); // Chắc chắn rằng API có thể xử lý formData
       }
-
+  
       // Reset form và state sau khi hoàn thành
       form.resetFields();
       setImagePreview("");
@@ -259,6 +298,7 @@ const ManageStories = () => {
       console.log("Validation Failed:", error);
     }
   };
+  
 
   const removeStory = async (storyId) => {
     Modal.confirm({
@@ -364,6 +404,33 @@ const ManageStories = () => {
       // and set the image URL using the response from the server
     }, 0);
   };
+
+
+  // const dummyRequest = ({ file, onSuccess, onError }) => {
+  //   const formData = new FormData();
+  //   formData.append("image", file);
+  
+  //   axios.post(`${API_URL}/api/upload-image`, formData, {
+  //     headers: {
+  //       "Content-Type": "multipart/form-data",
+  //     },
+  //   })
+  //   .then((response) => {
+  //     // Handle success
+  //     onSuccess();
+  //     // You can also handle the response from the server if needed
+  //     console.log("Image uploaded successfully", response.data);
+  //   })
+  //   .catch((error) => {
+  //     // Handle error
+  //     onError(error);
+  //     console.error("Error uploading image", error);
+  //   });
+  // };
+  
+
+
+
 
   const handleImageChange = (info) => {
     if (info.file.status === "done") {

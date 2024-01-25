@@ -528,6 +528,7 @@ const WishlistPage = () => {
         columns={wishlistColumns}
         dataSource={filteredWishlist}
         rowKey="_id"
+        pagination={{ pageSize: 3 }}
       />
     </div>
   </div>

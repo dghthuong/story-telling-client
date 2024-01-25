@@ -28,21 +28,11 @@
   
   .custom-form .ant-input {
     height: 50px;
-     
     font-size: 17px; /* Increase the font size inside the input */
   }
   
   /* Adjust the size of the button if needed */
-  .custom-form .ant-btn {
-    padding: 6px 15px; /* Increase padding for a larger button */
-    font-size: 16px; /* Increase font size for the button text */
-  }
-  
-  /* You may also want to increase the size of the icons if you are using them */
-  .custom-form .anticon {
-    font-size: 16px; /* Increase the size of the icon */
-  }
-  
+
 
 
   @media (max-width: 480px) {

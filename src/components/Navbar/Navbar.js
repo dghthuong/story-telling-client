@@ -32,7 +32,7 @@ const Navbar = () => {
       }
     };
     fetchData();
-  });
+  },[userId]);
 
 
   return (

@@ -80,6 +80,7 @@ const ManageGenres = () => {
     setIsModalOpen(false);
   };
 
+  
   const renderAction = (text, record) => (
     <>
       <Button style={{color: '#ffffff', background:'#F19E3D'}} onClick={() => handleEdit(record)}>

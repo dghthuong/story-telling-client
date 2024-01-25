@@ -61,9 +61,9 @@ const StoriesCard = ({
       <Meta
         className="meta"
         title={story.title}
-        description={`Author: ${story.author}`}
+        description={`Tác giả: ${story.author}`}
       />
-      <p>Genre: {story.genre}</p>
+      <p>Thể loại: {story.genre}</p>
     </Card>
   );
 };

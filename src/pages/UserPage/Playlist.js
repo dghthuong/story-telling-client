@@ -284,6 +284,7 @@ const PlaylistPage = () => {
         dataSource={playlistData}
         columns={columns}
         className="playlist-table"
+        pagination={{ pageSize: 3 }}
       />
 
       {/* ... Rest of your component code */}

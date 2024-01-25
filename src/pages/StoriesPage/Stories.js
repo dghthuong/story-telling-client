@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import StoriesCard from "../../components/Card/Card";
@@ -15,16 +15,26 @@ const StoriesPage = () => {
   const [selectedGenre, setSelectedGenre] = useState("");
   const [stories, setStories] = useState([]);
   const [genres, setGenres] = useState([]);
+  const [isDropdownVisible, setDropdownVisible] = useState(false);
+
   const [wishlist, setWishlist] = useState([]);
   const userId = localStorage.getItem("id");
   let navigate = useNavigate();
 
 
-  const handleOutsideClick = () => {
-    setSelectedGenre(""); // Đặt lại lựa chọn thể loại
-    setSearchTerm(""); // Đặt lại từ khóa tìm kiếm
+  const handleOutsideClick = useCallback((event) => {
+    const isClickInsideDropdown = event.target.closest("#genre-dropdown");
+    const isClickOnStoryCard = event.target.classList.contains("storyCardContainer");
+    if (isDropdownVisible && !isClickInsideDropdown && !isClickOnStoryCard) {
+      setDropdownVisible(false);
+    }
+  }, [isDropdownVisible]);
+  
+  
+  const handleGenreClick = (genre) => {
+    // If the clicked genre is the same as the selected one, cancel the filtering
+    setSelectedGenre((prevGenre) => (prevGenre === genre ? "" : genre));
   };
-
 
   useEffect(() => {
     const fetchStories = async () => {
@@ -164,7 +174,6 @@ const StoriesPage = () => {
 
 
 
-
   const filteredStories = stories
     .filter((story) => story.isActive)
     .filter((story) =>
@@ -185,16 +194,20 @@ const StoriesPage = () => {
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
+
+
   const currentStories = filteredStories
     .slice(indexOfFirstStory, indexOfLastStory)
     .map((story) => ({
       ...story,
       imageUrl: `${API_URL}/${story.imageUrl}`, 
     }));
+
+
   return (
-    <div className={styles.pageContainer}>
+   <div className={styles.pageContainer}>
       <div className={styles.sidebarContainer}>
-        <Sidebar
+      <Sidebar
           onSearch={setSearchTerm}
           onCategorySelect={setSelectedGenre}
           onOutsideClick={handleOutsideClick}
@@ -211,7 +224,7 @@ const StoriesPage = () => {
                 imageUrl={story.imageUrl}
                 onAddToWishlist={handleAddToWishlist}
                 onPlay={() => handlePlayStory(story._id)}
-                isInWishlist={isStoryInWishlist(story._id)} // Add this prop
+                isInWishlist={isStoryInWishlist(story._id)} 
                 isAdmin={userIsAdmin()}
               />
             </div>
@@ -223,7 +236,7 @@ const StoriesPage = () => {
             width: "100%",
             display: "flex",
             justifyContent: "center",
-            marginTop: "10px",
+            marginTop: "30px",
           }}
         >
           <h2> </h2>

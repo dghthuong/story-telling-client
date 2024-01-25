@@ -1,151 +1,134 @@
 .storiesPageContainer {
-    display: flex;
-  }
-  
-  .sidebar {
-    width: 20%;
-    margin-left: 50px;
-    background-color: #bbb1b1;
-    border: 2px solid black;
-    height: 100vh;
-    width: 50vh;
-  }
-  
-  .storyCardsContainer {
-    width: 100%;
-  }
-  
-  .cards {
-    margin-top: 20px;
-    margin-left: 20px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-  }
-  
-  .cards > div {
-    width: calc(25% - 20px);
-    height: 200px;
-    background-color: #d0e0f0;
-    border: 2px solid red;
-  }
-  
-  .showMoreButton {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    margin-top: 10px;
-  }
-  /* StoriesPage.module.css */
+  display: flex;
+}
+
+
+.storyCardsContainer {
+  width: 100vh;
+  text-align: center;
+}
+
+.cards {
+  margin-top: 20px;
+  margin-left: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+
+}
+.showMoreButton {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+/* StoriesPage.module.css */
 
 
 .pageContainer {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1px;
+}
 
-  }
-  
-  .sidebarContainer {
-    flex: 1 0 200px;
-  }
-  
-  .mainContent {
-    flex: 6 6 1000px;
-  }
-  
-  .storyCardContainer {
-    flex: 1 0 25%;
-    max-width: 25%;
-  }
+.sidebarContainer {
+  width: 40vh;
+}
 
-  
-  .page-container {
-    display: flex;
+.mainContent {
+  flex: 6 6 1000px;
+}
+
+.storyCardContainer {
+  flex: 1 0 25%;
+  max-width: 25%;
+}
+
+
+.page-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* 100% của viewport height */
+}
+
+/* Đẩy pagination-container xuống dưới cùng */
+.pagination-container {
+  margin-top: auto; /* Tự động đẩy lên trên và phần tử này xuống dưới cùng */
+}
+
+.cards > div {
+  width: calc(25% - 20px);
+  height: 200px;
+  background-color: #d0e0f0;
+  border: 2px solid red;
+}
+
+@media (max-width: 1200px) {
+  .pageContainer {
+    /* Adjust the scale factor as needed for the best appearance */
+    transform: scale(0.8);
+    transform-origin: top left;
+    overflow: hidden; /* Add this if you see scrollbars because of scaling */
+  }
+  .cards > div {
+    width: 15%; 
+   
+  }
+}
+
+@media (max-width: 992px) {
+  .pageContainer {
+    transform: scale(0.5); /* Example: scale down to 80% of the original size */
     flex-direction: column;
-    min-height: 100vh; /* 100% của viewport height */
-  }
-  
-  /* Đẩy pagination-container xuống dưới cùng */
-  .pagination-container {
-    margin-top: auto; /* Tự động đẩy lên trên và phần tử này xuống dưới cùng */
   }
 
 
-  
-  @media (max-width: 992px) {
-    .pageContainer {
-      transform: scale(0.5); /* Example: scale down to 80% of the original size */
-      flex-direction: column;
-    }
-  
-    .sidebarContainer,
-    .mainContent {
-      flex: 1 0 100%;
-    }
-  
-    .storyCardContainer {
-      flex: 1 0 48%;
-      max-width: 48%;
-    }
-  }
-  .storiesContainer {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: flex-start; 
-    margin-top: 100px;
-    margin-left: 150px;
+  .mainContent {
+    flex: 1 0 100%;
   }
 
-  @media (max-width: 1200px) {
-    .pageContainer {
-      /* Adjust the scale factor as needed for the best appearance */
-      transform: scale(0.8);
-      transform-origin: top left;
-      overflow: hidden; /* Add this if you see scrollbars because of scaling */
-    }
-    .cards > div {
-      width: 5%; 
-     
-    }
+  .storyCardContainer {
+    flex: 1 0 48%;
+    max-width: 48%;
+  }
+}
+.storiesContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center; 
+  margin-top: 70px;
+  margin-left: 50px;
+}
+
+
+
+
+@media (max-width: 768px) {
+  .storyCardsContainer {
+    /* Allow content to take full width */
+    width: 100%;
+    height: 130%;
+  }
+  .sidebarContainer {
+    width: 40vh;
+  }
+  
+
+  .cards {
+    /* Remove the margins as the sidebar is not taking up space */
+    margin: 20px 0;
   }
 
- 
-  @media (max-width: 768px) {
-    .sidebar {
-      /* Make the sidebar take up less space or become a dropdown on mobile */
-      transform: scale(0.75);
-      transform-origin: top left;
-      width: 100%; /* Full width for smaller screens */
-      margin-left: 0; /* Reset margin */
-      /* Adjust the height or convert to a dropdown if the content is too much */
-      height: auto;
-      /* Optionally, you can hide the sidebar and toggle it with a button */
-      display: none;
-    }
-  
-    .storyCardsContainer {
-      /* Allow content to take full width */
-      width: 100%;
-      height: 130%;
-    }
-  
-    .cards {
-      /* Remove the margins as the sidebar is not taking up space */
-      margin: 20px 0;
-    }
-  
-    .cards > div {
-      /* Cards should take up full width on mobile, minus any desired padding */
-      width: calc(100% - 20px); /* Assuming 20px padding on each side */
-      margin: 10px 0; /* Adjust margin for spacing */
-      height: auto; /* Allow height to adjust to content */
-    }
-  
-    .showMoreButton {
-      margin-top: 20px;
-    }
+  .cards > div {
+    /* Cards should take up full width on mobile, minus any desired padding */
+    width: calc(100% - 10px); /* Assuming 20px padding on each side */
+    margin: 10px 0; /* Adjust margin for spacing */
+    height: auto; /* Allow height to adjust to content */
   }
-  
-  
+
+  .showMoreButton {
+    margin-top: 20px;
+  }
+}
+

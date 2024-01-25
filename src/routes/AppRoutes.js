@@ -13,6 +13,8 @@ import WishlistPage from "../pages/UserPage/Wishlist";
 import PlaylistPage from "../pages/UserPage/Playlist";
 import AudioRecorder from "../pages/UserPage/Voice";
 import AudioList from "../pages/UserPage/ManageVoice"
+import ForgotPassword from "../pages/ForgotPasswordPage/ForgotPasswordPage";
+import ResetPassword from "../pages/ForgotPasswordPage/ResetPasswordPage";
 
 
 const AppRoutes = () => {
@@ -30,6 +32,9 @@ const AppRoutes = () => {
         <Route path="/play/:storyId" element={<PlayStories />} />
         <Route path="/user/record" element={<UserRoutes><AudioRecorder/></UserRoutes>} />
         <Route path="/user/manage-voice" element={<UserRoutes><AudioList/></UserRoutes>} />
+        <Route path="/forgot-password" element={<ForgotPassword/>} />
+        <Route path="/reset-password/:token" element={<ResetPassword/>} />
+
       </Routes>
     </>
   );
