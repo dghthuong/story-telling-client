@@ -152,37 +152,37 @@ const ManageUsers = () => {
     setIsModalOpen(true);
   };
 
-  // const handleFormSubmit = (userData) => {
-  //   if (editingUser) {
-  //     updateUser(editingUser.key, userData, token)
-  //       .then(() => {
-  //         setEditingUser(null);
-  //         LoadListUser();
-  //       })
-  //       .catch(error => console.error('Error updating user:', error));
-  //   } else {
-  //     createUser(userData, token)
-  //       .then(() => LoadListUser())
-  //       .catch(error => console.error('Error creating user:', error));
-  //   }
-  //   setIsModalOpen(false);
-  // };
-
   const handleFormSubmit = (userData) => {
-    const action = editingUser ? updateUser : createUser;
-    const userId = editingUser ? editingUser.key : undefined;
-
-    action(userId, userData, token)
-      .then(() => {
-        setIsModalOpen(false);
-        setEditingUser(null); // Reset editingUser sau khi submit
-        LoadListUser(); // Cập nhật danh sách người dùng
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-        message.error(`Failed to ${editingUser ? "update" : "create"} user.`);
-      });
+    if (editingUser) {
+      updateUser(editingUser.key, userData, token)
+        .then(() => {
+          setEditingUser(null);
+          LoadListUser();
+        })
+        .catch(error => console.error('Error updating user:', error));
+    } else {
+      createUser(userData, token)
+        .then(() => LoadListUser())
+        .catch(error => console.error('Error creating user:', error));
+    }
+    setIsModalOpen(false);
   };
+
+  // const handleFormSubmit = (userData) => {
+  //   const action = editingUser ? updateUser : createUser;
+  //   const userId = editingUser ? editingUser.key : undefined;
+
+  //   action(userId, userData, token)
+  //     .then(() => {
+  //       setIsModalOpen(false);
+  //       setEditingUser(null); // Reset editingUser sau khi submit
+  //       LoadListUser(); // Cập nhật danh sách người dùng
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error:", error);
+  //       message.error(`Failed to ${editingUser ? "update" : "create"} user.`);
+  //     });
+  // };
 
   const handleOk = () => {
     formRef.current.submit();

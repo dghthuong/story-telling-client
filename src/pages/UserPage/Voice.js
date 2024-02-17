@@ -203,19 +203,19 @@ const AudioRecorder = () => {
 
   const validateAndTrainVoice = async (voiceFile) => {
     try {
-      setStatusMessage('Validating voice...');
+      setStatusMessage('Xác thực giọng nói...');
       setProgress(25); // Assuming validation is about 25% of the process
       await validateVoice(voiceFile, voiceId);
 
-      setStatusMessage('Training voice model...');
+      setStatusMessage('Rút trích đặc trưng giọng nói...');
       setProgress(50); // Assuming training starts at 50%
       await trainVoiceModel(voiceId);
 
       setProgress(100);
-      setStatusMessage('Voice model trained successfully!');
+      setStatusMessage('Đặc trưng giọng nói đã được rút trích thành công!');
       
     } catch (error) {
-      setStatusMessage('Error in voice processing: ' + error.message);
+      setStatusMessage('Lỗi khi xử lý giọng nói: ' + error.message);
       setProgress(0);
       throw error;
     }
@@ -305,8 +305,8 @@ const AudioRecorder = () => {
 
     if (!allRecorded) {
       Swal.fire({
-        title: "Incomplete Recordings",
-        text: "Please record all sentences before saving.",
+        title: "Ghi âm không thành công",
+        text: "Bạn vui lòng ghi âm tất cả các câu trước khi lưu.",
         icon: "warning",
         confirmButtonText: "OK",
       });
@@ -321,10 +321,10 @@ const AudioRecorder = () => {
       }
 
       Swal.fire({
-        title: "Your Record have been save!",
-        text: "Continute!",
+        title: "Giọng của bạn đã được lưu!",
+        text: "Tiếp tục!",
         icon: "success",
-        confirmButtonText: "Done",
+        confirmButtonText: "Hoàn thành",
       });
     });
 
